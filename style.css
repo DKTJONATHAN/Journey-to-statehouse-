@@ -347,3 +347,20 @@ body {
     40% { transform: translateY(-10px); }
     60% { transform: translateY(-5px); }
 }
+/* Add to style.css */
+#voterRegistrationScreen {
+  text-align: center;
+  padding: 30px;
+}
+
+#voterRegistrationScreen h2 {
+  color: #FFD700;
+  margin-bottom: 20px;
+}
+
+#registrationInfo {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 5px solid #4CAF50;
+}
