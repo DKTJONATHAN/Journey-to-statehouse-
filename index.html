@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey to State House - Kenya Civic Education Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <div class="kenya-flag">
+                <div class="flag-stripe flag-black"></div>
+                <div class="flag-stripe flag-red"></div>
+                <div class="flag-stripe flag-white"></div>
+                <div class="flag-stripe flag-green"></div>
+            </div>
+            <h1 class="title">Journey to State House</h1>
+            <p class="subtitle">A Kenyan Civic Education Adventure</p>
+        </div>
+
+        <div class="game-screen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+            </div>
+            
+            <div class="level-indicator">
+                <span id="levelText">Welcome, Future Leader!</span>
+            </div>
+
+            <!-- Start Screen -->
+            <div id="startScreen" class="start-screen">
+                <h2>🏛️ Welcome to the Journey to State House! �</h2>
+                <p>You are a dedicated citizen of Kenya with a dream to serve your country. Your journey to State House is filled with challenges that will test your knowledge of:</p>
+                <ul style="text-align: left; margin: 20px 0; padding-left: 40px;">
+                    <li>📜 The Kenyan Constitution</li>
+                    <li>🏛️ Kenyan History</li>
+                    <li>🗳️ Voting and Democracy</li>
+                    <li>⚖️ Rule of Law and Human Rights</li>
+                </ul>
+                <p>Along the way, you'll face obstacles set by those who oppose good governance. Only by demonstrating your civic knowledge can you overcome these challenges and reach the State House to make your choice for Kenya's future!</p>
+                <button class="btn btn-primary" onclick="startGame()">Begin Your Journey</button>
+            </div>
+
+            <!-- Question Screen -->
+            <div id="questionScreen" class="hidden">
+                <div class="obstacle-warning" id="obstacleWarning"></div>
+                <div class="question-container">
+                    <div class="question" id="questionText"></div>
+                    <div class="options" id="optionsContainer"></div>
+                    <input type="text" class="input-answer hidden" id="inputAnswer" placeholder="Type your answer here...">
+                    <button class="btn btn-success hidden" id="submitAnswer" onclick="checkAnswer()">Submit Answer</button>
+                </div>
+                <div class="feedback hidden" id="feedback"></div>
+                <button class="btn btn-primary hidden" id="nextButton" onclick="nextQuestion()">Continue Journey</button>
+            </div>
+
+            <!-- Final Voting Screen -->
+            <div id="votingScreen" class="hidden">
+                <h2 style="text-align: center; color: #FFD700; margin-bottom: 30px;">🏛️ You've Reached State House! 🏛️</h2>
+                <p style="text-align: center; font-size: 1.2em; margin-bottom: 30px;">Congratulations! You've proven your civic knowledge and reached the State House. Now, cast your vote for Kenya's future:</p>
+                
+                <div class="ballot-container">
+                    <div class="candidate good-leader" onclick="vote('good')">
+                        <h3>👑 Dr. Amani Mwangi</h3>
+                        <p><strong>The People's Champion</strong></p>
+                        <p>✓ Transparent governance</p>
+                        <p>✓ Anti-corruption fighter</p>
+                        <p>✓ Youth employment advocate</p>
+                        <p>✓ Healthcare for all</p>
+                        <p>✓ Education reform</p>
+                    </div>
+                    
+                    <div class="candidate villain" onclick="vote('villain')">
+                        <h3>👨‍💼 William Ruto</h3>
+                        <p><strong>The Current Leader</strong></p>
+                        <p>⚠️ Controversial policies</p>
+                        <p>⚠️ Economic challenges</p>
+                        <p>⚠️ Public dissatisfaction</p>
+                        <p>⚠️ Governance concerns</p>
+                        <p>⚠️ Broken promises</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Victory Screen -->
+            <div id="victoryScreen" class="hidden victory-screen">
+                <div class="statehouse-icon">🏛️</div>
+                <h2>Democracy Prevails!</h2>
+                <p id="victoryMessage"></p>
+                <button class="btn btn-success" onclick="restartGame()">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
