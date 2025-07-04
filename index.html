@@ -410,6 +410,17 @@
   to { transform: translateY(0); opacity: 1; }
 }
     </style>
+    <!-- PWA Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#2a5298">
+    <meta name="description" content="Kenyan Constitution & History Game">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png">
+
+    <!-- iOS specific -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
     <div class="game-container">
@@ -505,28 +516,17 @@
             </div>
         </div>
     </div>
-<!-- Add these INSIDE the <head> tag -->
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#2a5298">
-<meta name="description" content="Kenyan Constitution & History Game">
-<link rel="manifest" href="/manifest.json">
-<link rel="icon" href="/icon-192.png">
 
-<!-- iOS specific -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="/icon-192.png">
-
-<!-- Register service worker -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(registration => console.log('SW registered: ', registration))
-        .catch(registrationError => console.log('SW registration failed: ', registrationError));
-    });
-  }
-</script>
+    <!-- Install Prompt -->
+    <div id="installPrompt" class="install-prompt hidden">
+        <div class="install-prompt-content">
+            <p>Install Ikulu Run for offline play?</p>
+            <div class="install-prompt-buttons">
+                <button id="installButton">Install</button>
+                <button id="dismissButton">Dismiss</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Game state
@@ -897,6 +897,9 @@
                     startGame(gameState.currentLevel, true);
                 }
             }
+            
+            // Initialize PWA functionality
+            initPWA();
         }
 
         // Save game state to localStorage
@@ -1099,6 +1102,63 @@
                 checkAnswer();
             }
         });
+
+        // PWA Installation Handling
+        let deferredPrompt;
+
+        function initPWA() {
+            // Check if the browser supports service workers
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('sw.js')
+                        .then(registration => {
+                            console.log('ServiceWorker registration successful');
+                        })
+                        .catch(err => {
+                            console.log('ServiceWorker registration failed: ', err);
+                        });
+                });
+            }
+
+            // Listen for beforeinstallprompt event
+            window.addEventListener('beforeinstallprompt', (e) => {
+                // Prevent the mini-infobar from appearing on mobile
+                e.preventDefault();
+                // Stash the event so it can be triggered later
+                deferredPrompt = e;
+                // Show the install button
+                showInstallPromotion();
+            });
+
+            // Handle install button click
+            document.getElementById('installButton').addEventListener('click', (e) => {
+                // Hide the install prompt
+                document.getElementById('installPrompt').classList.add('hidden');
+                // Show the install prompt
+                deferredPrompt.prompt();
+                // Wait for the user to respond to the prompt
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            });
+
+            // Handle dismiss button click
+            document.getElementById('dismissButton').addEventListener('click', (e) => {
+                document.getElementById('installPrompt').classList.add('hidden');
+            });
+        }
+
+        function showInstallPromotion() {
+            // Only show if we have the deferredPrompt available
+            if (deferredPrompt) {
+                document.getElementById('installPrompt').classList.remove('hidden');
+            }
+        }
 
         // Initialize game when page loads
         window.onload = initGame;
