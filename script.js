@@ -140,6 +140,12 @@ function showConstitutionalReference(article) {
     </button>
   `;
 }
+// Level progression thresholds
+const LEVEL_REQUIREMENTS = {
+  medium: { score: 70%, time: null },
+  hard: { score: 80%, time: "30s per question" },
+  vote: { completeAll: true }
+};
 
 // Updated vote function
 function vote(choice) {
