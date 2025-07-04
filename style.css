@@ -1,0 +1,349 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    color: white;
+    overflow-x: hidden;
+}
+
+.game-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    position: relative;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+.kenya-flag {
+    width: 80px;
+    height: 50px;
+    margin: 0 auto 15px;
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+}
+
+.flag-stripe {
+    height: 100%;
+    width: 100%;
+}
+
+.flag-black { background: #000; height: 25%; }
+.flag-red { background: #CE1126; height: 50%; }
+.flag-white { background: #fff; height: 25%; }
+.flag-green { background: #006A4E; height: 25%; }
+
+.title {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+.game-screen {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shine 2s infinite;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.level-indicator {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.question-container {
+    margin-bottom: 20px;
+}
+
+.question {
+    font-size: 1.3em;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    text-align: center;
+    font-weight: bold;
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option {
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+.option:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: #FFD700;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.option.correct {
+    background: rgba(76, 175, 80, 0.7);
+    border-color: #4CAF50;
+}
+
+.option.incorrect {
+    background: rgba(244, 67, 54, 0.7);
+    border-color: #F44336;
+}
+
+.input-answer {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2em;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    text-align: center;
+}
+
+.input-answer::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.btn {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #FF5252, #FF7979);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #4CAF50, #66BB6A);
+    color: white;
+}
+
+.btn-success:hover {
+    background: linear-gradient(45deg, #45a049, #5cb85c);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+}
+
+.feedback {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    animation: pulse 0.5s ease-in;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.feedback.correct {
+    background: rgba(76, 175, 80, 0.3);
+    border: 2px solid #4CAF50;
+    color: #4CAF50;
+}
+
+.feedback.incorrect {
+    background: rgba(244, 67, 54, 0.3);
+    border: 2px solid #F44336;
+    color: #F44336;
+}
+
+.start-screen {
+    text-align: center;
+}
+
+.start-screen h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #FFD700;
+}
+
+.start-screen p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.ballot-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.candidate {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    flex: 1;
+    margin: 0 10px;
+}
+
+.candidate:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: #FFD700;
+    transform: translateY(-5px);
+}
+
+.candidate.good-leader {
+    border-color: #4CAF50;
+}
+
+.candidate.villain {
+    border-color: #F44336;
+}
+
+.candidate h3 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+.candidate p {
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+.hidden {
+    display: none;
+}
+
+.obstacle-warning {
+    background: rgba(255, 193, 7, 0.3);
+    border: 2px solid #FFC107;
+    color: #FFC107;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.victory-screen {
+    text-align: center;
+    padding: 40px;
+}
+
+.victory-screen h2 {
+    font-size: 3em;
+    color: #FFD700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.victory-screen p {
+    font-size: 1.3em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.statehouse-icon {
+    font-size: 5em;
+    margin-bottom: 20px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
