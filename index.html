@@ -360,6 +360,55 @@
             40% { transform: translateY(-10px); }
             60% { transform: translateY(-5px); }
         }
+/* Install Prompt Styles */
+.install-prompt {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  animation: slideIn 0.5s ease-out;
+}
+
+.install-prompt-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.install-prompt-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+#installButton {
+  background: linear-gradient(45deg, #4CAF50, #66BB6A);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  flex-grow: 1;
+}
+
+#dismissButton {
+  background: rgba(255,255,255,0.2);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
     </style>
 </head>
 <body>
@@ -478,6 +527,7 @@
     });
   }
 </script>
+
     <script>
         // Game state
         let gameState = {
