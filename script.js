@@ -1,4 +1,3 @@
-// Game state
 const gameState = {
     playerName: '',
     currentLevel: '',
@@ -7,26 +6,29 @@ const gameState = {
     timer: null,
     timeLeft: 0,
     questions: [],
-    isRegisteredVoter: false
+    currentScreen: 'welcome'
 };
 
-// DOM elements
-const welcomeScreen = document.getElementById('welcome-screen');
-const levelSelectScreen = document.getElementById('level-select');
-const gameScreen = document.getElementById('game-screen');
-const voterRegistrationScreen = document.getElementById('voter-registration');
-const votingProcessScreen = document.getElementById('voting-process');
-const presidentialElectionScreen = document.getElementById('presidential-election');
-const resultsScreen = document.getElementById('results-screen');
+const screens = {
+    welcome: document.getElementById('welcome-screen'),
+    levelSelect: document.getElementById('level-select'),
+    game: document.getElementById('game-screen'),
+    voterRegistration: document.getElementById('voter-registration'),
+    votingProcess: document.getElementById('voting-process'),
+    presidentialElection: document.getElementById('presidential-election'),
+    results: document.getElementById('results-screen')
+};
 
 const playerNameInput = document.getElementById('player-name');
 const startGameBtn = document.getElementById('start-game');
-const easyLevelBtn = document.getElementById('easy-level');
-const mediumLevelBtn = document.getElementById('medium-level');
-const hardLevelBtn = document.getElementById('hard-level');
+const levelButtons = {
+    easy: document.getElementById('easy-level'),
+    medium: document.getElementById('medium-level'),
+    hard: document.getElementById('hard-level')
+};
 
 const displayName = document.getElementById('display-name');
-const scoreDisplay = document.getElementById('score');
+const scoreDisplays = document.querySelectorAll('.score-display');
 const timerDisplay = document.getElementById('timer');
 const currentLevelDisplay = document.getElementById('current-level');
 const questionText = document.getElementById('question-text');
@@ -52,33 +54,70 @@ const resultTitle = document.getElementById('result-title');
 const resultContent = document.getElementById('result-content');
 const playAgainBtn = document.getElementById('play-again');
 
-// Event listeners
-startGameBtn.addEventListener('click', startGame);
-easyLevelBtn.addEventListener('click', () => selectLevel('easy'));
-mediumLevelBtn.addEventListener('click', () => selectLevel('medium'));
-hardLevelBtn.addEventListener('click', () => selectLevel('hard'));
-submitFillAnswerBtn.addEventListener('click', checkFillAnswer);
-nextQuestionBtn.addEventListener('click', nextQuestion);
-proceedToVoteBtn.addEventListener('click', showVotingProcess);
-proceedToElectionBtn.addEventListener('click', showPresidentialElection);
-choosePlayerBtn.addEventListener('click', () => showElectionResults(true));
-chooseRutoBtn.addEventListener('click', () => showElectionResults(false));
-playAgainBtn.addEventListener('click', resetGame);
+const backButtons = document.querySelectorAll('.back-btn');
 
-// Start game function
-function startGame() {
-    const name = playerNameInput.value.trim();
-    if (name === '') {
-        alert('Please enter your name to continue');
-        return;
-    }
+function initGame() {
+    loadGameState();
+    setupEventListeners();
     
-    gameState.playerName = name;
-    welcomeScreen.classList.add('hidden');
-    levelSelectScreen.classList.remove('hidden');
+    if (gameState.currentScreen && gameState.currentScreen !== 'welcome') {
+        showScreen(gameState.currentScreen);
+        if (gameState.currentScreen === 'game') displayQuestion();
+    }
 }
 
-// Select level function
+function loadGameState() {
+    const savedState = localStorage.getItem('ikuluRunGameState');
+    if (savedState) {
+        const parsedState = JSON.parse(savedState);
+        Object.assign(gameState, parsedState);
+        
+        if (gameState.playerName) {
+            playerNameInput.value = gameState.playerName;
+            displayName.textContent = gameState.playerName;
+        }
+        
+        updateScoreDisplay();
+    }
+}
+
+function saveGameState() {
+    localStorage.setItem('ikuluRunGameState', JSON.stringify(gameState));
+}
+
+function setupEventListeners() {
+    startGameBtn.addEventListener('click', startGame);
+    levelButtons.easy.addEventListener('click', () => selectLevel('easy'));
+    levelButtons.medium.addEventListener('click', () => selectLevel('medium'));
+    levelButtons.hard.addEventListener('click', () => selectLevel('hard'));
+    submitFillAnswerBtn.addEventListener('click', checkFillAnswer);
+    nextQuestionBtn.addEventListener('click', nextQuestion);
+    proceedToVoteBtn.addEventListener('click', showVotingProcess);
+    proceedToElectionBtn.addEventListener('click', showPresidentialElection);
+    choosePlayerBtn.addEventListener('click', () => showElectionResults(true));
+    chooseRutoBtn.addEventListener('click', () => showElectionResults(false));
+    playAgainBtn.addEventListener('click', resetGame);
+    
+    backButtons.forEach(btn => btn.addEventListener('click', goBack));
+    window.addEventListener('beforeunload', saveGameState);
+}
+
+function showScreen(screenName) {
+    Object.values(screens).forEach(screen => screen.classList.add('hidden'));
+    screens[screenName].classList.remove('hidden');
+    gameState.currentScreen = screenName;
+    saveGameState();
+    updateScoreDisplay();
+}
+
+function startGame() {
+    const name = playerNameInput.value.trim();
+    if (!name) return alert('Please enter your name');
+    
+    gameState.playerName = name;
+    showScreen('levelSelect');
+}
+
 function selectLevel(level) {
     gameState.currentLevel = level;
     gameState.questions = getQuestionsForLevel(level);
@@ -86,26 +125,12 @@ function selectLevel(level) {
     gameState.score = 0;
     
     displayName.textContent = gameState.playerName;
-    scoreDisplay.textContent = `Score: ${gameState.score}`;
     currentLevelDisplay.textContent = `Level: ${level.charAt(0).toUpperCase() + level.slice(1)}`;
     
-    levelSelectScreen.classList.add('hidden');
-    gameScreen.classList.remove('hidden');
-    
+    showScreen('game');
     displayQuestion();
 }
 
-// Get questions for selected level
-function getQuestionsForLevel(level) {
-    // Get questions from constitution.js based on level
-    const allQuestions = [...constitutionQuestions, ...electionQuestions, ...financeBillQuestions];
-    
-    // Filter by level and shuffle
-    const levelQuestions = allQuestions.filter(q => q.level === level);
-    return shuffleArray(levelQuestions).slice(0, 15);
-}
-
-// Display current question
 function displayQuestion() {
     if (gameState.currentQuestionIndex >= gameState.questions.length) {
         startElectionProcess();
@@ -115,21 +140,15 @@ function displayQuestion() {
     const question = gameState.questions[gameState.currentQuestionIndex];
     questionText.textContent = question.question;
     
-    // Reset UI elements
     optionsContainer.innerHTML = '';
     fillAnswerContainer.classList.add('hidden');
     feedbackDisplay.classList.add('hidden');
     funFactDisplay.classList.add('hidden');
     nextQuestionBtn.classList.add('hidden');
     
-    // Start timer if question has one
-    if (question.timer) {
-        startTimer(question.timer);
-    } else {
-        timerDisplay.textContent = '';
-    }
+    if (question.timer) startTimer(question.timer);
+    else timerDisplay.textContent = '';
     
-    // Display question based on type
     if (question.type === 'multiple') {
         question.options.forEach((option, index) => {
             const button = document.createElement('button');
@@ -144,7 +163,6 @@ function displayQuestion() {
         fillAnswerInput.focus();
     }
     
-    // Show fun fact if available (20% chance)
     if (question.funFact && Math.random() < 0.2) {
         setTimeout(() => {
             funFactDisplay.textContent = `Fun Fact: ${question.funFact}`;
@@ -153,19 +171,15 @@ function displayQuestion() {
     }
 }
 
-// Start timer for timed questions
 function startTimer(seconds) {
     gameState.timeLeft = seconds;
     timerDisplay.textContent = `Time: ${gameState.timeLeft}`;
     
-    if (gameState.timer) {
-        clearInterval(gameState.timer);
-    }
+    if (gameState.timer) clearInterval(gameState.timer);
     
     gameState.timer = setInterval(() => {
         gameState.timeLeft--;
         timerDisplay.textContent = `Time: ${gameState.timeLeft}`;
-        
         if (gameState.timeLeft <= 0) {
             clearInterval(gameState.timer);
             timeUp();
@@ -173,227 +187,166 @@ function startTimer(seconds) {
     }, 1000);
 }
 
-// Handle time up
-function timeUp() {
-    feedbackDisplay.textContent = 'Time is up!';
-    feedbackDisplay.classList.add('incorrect');
-    feedbackDisplay.classList.remove('hidden');
-    nextQuestionBtn.classList.remove('hidden');
-}
-
-// Check multiple choice answer
 function checkAnswer(selectedIndex) {
     const question = gameState.questions[gameState.currentQuestionIndex];
     const isCorrect = selectedIndex === question.correctIndex;
     
+    feedbackDisplay.textContent = isCorrect ? 'Correct!' : 
+        `Incorrect! The correct answer is: ${question.options[question.correctIndex]}`;
+    feedbackDisplay.className = isCorrect ? 'feedback correct' : 'feedback incorrect';
+    
     if (isCorrect) {
-        feedbackDisplay.textContent = 'Correct!';
-        feedbackDisplay.classList.add('correct');
-        feedbackDisplay.classList.remove('incorrect');
         gameState.score += 10;
-        scoreDisplay.textContent = `Score: ${gameState.score}`;
-    } else {
-        feedbackDisplay.textContent = `Incorrect! The correct answer is: ${question.options[question.correctIndex]}`;
-        feedbackDisplay.classList.add('incorrect');
-        feedbackDisplay.classList.remove('correct');
+        updateScoreDisplay();
     }
     
     feedbackDisplay.classList.remove('hidden');
     nextQuestionBtn.classList.remove('hidden');
-    
-    if (gameState.timer) {
-        clearInterval(gameState.timer);
-    }
+    if (gameState.timer) clearInterval(gameState.timer);
 }
 
-// Check fill-in answer
 function checkFillAnswer() {
     const question = gameState.questions[gameState.currentQuestionIndex];
-    const userAnswer = fillAnswerInput.value.trim().toLowerCase();
-    const correctAnswer = question.answer.toLowerCase();
+    const isCorrect = fillAnswerInput.value.trim().toLowerCase() === question.answer.toLowerCase();
     
-    // Simple check for fill-in answers (could be enhanced)
-    const isCorrect = userAnswer === correctAnswer;
+    feedbackDisplay.textContent = isCorrect ? 'Correct!' : `Incorrect! The correct answer is: ${question.answer}`;
+    feedbackDisplay.className = isCorrect ? 'feedback correct' : 'feedback incorrect';
     
     if (isCorrect) {
-        feedbackDisplay.textContent = 'Correct!';
-        feedbackDisplay.classList.add('correct');
-        feedbackDisplay.classList.remove('incorrect');
         gameState.score += 10;
-        scoreDisplay.textContent = `Score: ${gameState.score}`;
-    } else {
-        feedbackDisplay.textContent = `Incorrect! The correct answer is: ${question.answer}`;
-        feedbackDisplay.classList.add('incorrect');
-        feedbackDisplay.classList.remove('correct');
+        updateScoreDisplay();
     }
     
     feedbackDisplay.classList.remove('hidden');
     nextQuestionBtn.classList.remove('hidden');
-    
-    if (gameState.timer) {
-        clearInterval(gameState.timer);
-    }
+    if (gameState.timer) clearInterval(gameState.timer);
 }
 
-// Move to next question
 function nextQuestion() {
     gameState.currentQuestionIndex++;
     displayQuestion();
 }
 
-// Start election process after questions
 function startElectionProcess() {
-    gameScreen.classList.add('hidden');
-    voterRegistrationScreen.classList.remove('hidden');
+    showScreen('voterRegistration');
     
-    // Check if player is registered voter
-    const isRegistered = Math.random() > 0.3; // 70% chance they're registered
-    
-    if (isRegistered) {
-        voterContent.innerHTML = `
-            <p>Welcome ${gameState.playerName}! Our records show you are a registered voter.</p>
-            <p>You can proceed to learn about the voting process.</p>
-        `;
-        proceedToVoteBtn.classList.remove('hidden');
-    } else {
-        voterContent.innerHTML = `
-            <h3>You need to register as a voter!</h3>
-            <p>To participate in Kenyan elections, you must be a registered voter.</p>
-            <p><strong>Requirements for voter registration:</strong></p>
-            <ul>
-                <li>Be a Kenyan citizen</li>
-                <li>Be at least 18 years old</li>
-                <li>Have a valid Kenyan ID or passport</li>
-            </ul>
-            <p><strong>How to register:</strong></p>
-            <ol>
-                <li>Visit your nearest IEBC registration center</li>
-                <li>Present your original ID/passport and a copy</li>
-                <li>Have your biometrics taken (photo and fingerprints)</li>
-                <li>Receive your voter's card</li>
-            </ol>
-            <p>Registration is free and should be done at least 60 days before elections.</p>
-        `;
-        proceedToVoteBtn.classList.remove('hidden');
-    }
-}
-
-// Show voting process
-function showVotingProcess() {
-    voterRegistrationScreen.classList.add('hidden');
-    votingProcessScreen.classList.remove('hidden');
-    
-    votingSteps.innerHTML = `
-        <h3>How to Vote in Kenyan Elections</h3>
+    const isRegistered = Math.random() > 0.3;
+    voterContent.innerHTML = isRegistered ? `
+        <p>Welcome ${gameState.playerName}! You are a registered voter.</p>
+        <p>Proceed to learn about the voting process.</p>
+    ` : `
+        <h3>Voter Registration Required</h3>
+        <p><strong>Requirements:</strong></p>
+        <ul>
+            <li>Kenyan citizen</li>
+            <li>At least 18 years old</li>
+            <li>Valid Kenyan ID/passport</li>
+        </ul>
+        <p><strong>Registration Steps:</strong></p>
         <ol>
-            <li><strong>Verify your registration:</strong> Check your polling station using your ID number on the IEBC website or SMS service</li>
-            <li><strong>On election day:</strong> Go to your designated polling station with your voter's card or ID</li>
-            <li><strong>Identification:</strong> Present your ID to the election officials for verification</li>
-            <li><strong>Voting:</strong>
-                <ul>
-                    <li>Receive all ballot papers (6 for presidential election)</li>
-                    <li>Mark your preferred candidate in secret</li>
-                    <li>Fold the ballot papers and drop them in their respective boxes</li>
-                </ul>
-            </li>
-            <li><strong>Verification:</strong> Your finger is marked with indelible ink to prevent double voting</li>
+            <li>Visit IEBC registration center</li>
+            <li>Present ID and copy</li>
+            <li>Biometrics capture</li>
+            <li>Receive voter's card</li>
         </ol>
-        <p>Remember, voting is your constitutional right (Article 38) and civic duty!</p>
     `;
 }
 
-// Show presidential election
-function showPresidentialElection() {
-    votingProcessScreen.classList.add('hidden');
-    presidentialElectionScreen.classList.remove('hidden');
-    
-    // Generate random positive qualities for the player
-    const goodQualities = [
-        "Transparent and accountable",
-        "Strong anti-corruption stance",
-        "Progressive economic policies",
-        "Youth empowerment champion",
-        "Education reform advocate",
-        "Healthcare improvement plan",
-        "Infrastructure development focus",
-        "Unity and inclusivity promoter"
-    ];
-    
-    const playerQualitiesList = shuffleArray(goodQualities).slice(0, 4);
-    playerQualities.innerHTML = '<ul>' + playerQualitiesList.map(q => `<li>${q}</li>`).join('') + '</ul>';
-    
-    // Generate negative qualities for Ruto
-    const badQualities = [
-        "Corruption allegations",
-        "Economic mismanagement",
-        "Tribal favoritism",
-        "Broken campaign promises",
-        "High cost of living under leadership",
-        "Poor education policies",
-        "Healthcare system deterioration",
-        "Debt accumulation"
-    ];
-    
-    const rutoQualitiesList = shuffleArray(badQualities).slice(0, 4);
-    rutoQualities.innerHTML = '<ul>' + rutoQualitiesList.map(q => `<li>${q}</li>`).join('') + '</ul>';
+function showVotingProcess() {
+    showScreen('votingProcess');
+    votingSteps.innerHTML = `
+        <h3>Voting Process</h3>
+        <ol>
+            <li>Verify polling station</li>
+            <li>Go to polling station with ID</li>
+            <li>Present ID for verification</li>
+            <li>Receive ballot papers</li>
+            <li>Mark ballot secretly</li>
+            <li>Fold and drop in boxes</li>
+            <li>Finger marked with ink</li>
+        </ol>
+    `;
 }
 
-// Show election results
+function showPresidentialElection() {
+    showScreen('presidentialElection');
+    
+    const goodQualities = shuffleArray([
+        "Transparent leadership", "Anti-corruption", "Economic reforms", 
+        "Youth empowerment", "Education focus", "Healthcare improvements"
+    ]).slice(0, 4);
+    
+    const badQualities = shuffleArray([
+        "Corruption allegations", "Economic mismanagement", "Tribal favoritism",
+        "Broken promises", "High living costs", "Debt accumulation"
+    ]).slice(0, 4);
+    
+    playerQualities.innerHTML = '<ul>' + goodQualities.map(q => `<li>${q}</li>`).join('') + '</ul>';
+    rutoQualities.innerHTML = '<ul>' + badQualities.map(q => `<li>${q}</li>`).join('') + '</ul>';
+}
+
 function showElectionResults(chosePlayer) {
-    presidentialElectionScreen.classList.add('hidden');
-    resultsScreen.classList.remove('hidden');
+    showScreen('results');
     
     if (chosePlayer) {
         resultTitle.textContent = 'Congratulations! Kenya Wins!';
         resultContent.innerHTML = `
-            <p>${gameState.playerName}, you have been elected President of Kenya!</p>
             <p>Under your leadership:</p>
             <ul>
-                <li>Corruption levels drop significantly</li>
-                <li>Economy grows at 7% annually</li>
-                <li>Universal healthcare coverage achieved</li>
-                <li>Education becomes free and accessible to all</li>
-                <li>Infrastructure development transforms the country</li>
-                <li>Kenya becomes a regional economic powerhouse</li>
-                <li>Unity and peace prevail across all communities</li>
+                <li>Corruption decreases</li>
+                <li>Economy grows at 7%</li>
+                <li>Universal healthcare achieved</li>
+                <li>Education improves</li>
             </ul>
-            <p>Thank you for your service to the nation!</p>
         `;
     } else {
         resultTitle.textContent = 'Kenya Suffers Under Ruto';
         resultContent.innerHTML = `
-            <p>Despite your knowledge of civic matters, you chose William Ruto as President.</p>
-            <p>Under Ruto's second term:</p>
+            <p>Under Ruto's leadership:</p>
             <ul>
-                <li>Corruption reaches unprecedented levels</li>
-                <li>Economy collapses with high inflation</li>
-                <li>Healthcare system becomes inaccessible to most</li>
-                <li>Education standards plummet</li>
-                <li>Debt burden cripples the nation</li>
-                <li>Tribal tensions rise across the country</li>
-                <li>Youth unemployment hits record highs</li>
+                <li>Corruption increases</li>
+                <li>Economy declines</li>
+                <li>Healthcare deteriorates</li>
+                <li>Debt burden grows</li>
             </ul>
-            <p>Kenya descends into chaos and poverty. Better luck next election!</p>
         `;
     }
 }
 
-// Reset game to start over
-function resetGame() {
-    resultsScreen.classList.add('hidden');
-    welcomeScreen.classList.remove('hidden');
-    playerNameInput.value = '';
-    gameState.playerName = '';
-    gameState.score = 0;
-    gameState.currentQuestionIndex = 0;
+function goBack() {
+    const backMap = {
+        levelSelect: 'welcome',
+        game: 'levelSelect',
+        voterRegistration: 'game',
+        votingProcess: 'voterRegistration',
+        presidentialElection: 'votingProcess',
+        results: 'presidentialElection'
+    };
+    
+    if (gameState.currentScreen in backMap) {
+        showScreen(backMap[gameState.currentScreen]);
+    }
 }
 
-// Utility function to shuffle array
-function shuffleArray(array) {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-    return newArray;
+function resetGame() {
+    localStorage.removeItem('ikuluRunGameState');
+    gameState.playerName = '';
+    gameState.currentLevel = '';
+    gameState.score = 0;
+    gameState.currentQuestionIndex = 0;
+    gameState.currentScreen = 'welcome';
+    playerNameInput.value = '';
+    showScreen('welcome');
 }
+
+function updateScoreDisplay() {
+    scoreDisplays.forEach(display => {
+        display.textContent = `Score: ${gameState.score}`;
+    });
+}
+
+function shuffleArray(array) {
+    return [...array].sort(() => Math.random() - 0.5);
+}
+
+window.addEventListener('DOMContentLoaded', initGame);
