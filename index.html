@@ -3,137 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journey 2 Ikulu - Kenya Civic Education Game</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Ikulu Run - Kenyan Civic Education Game</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="game-container">
-        <div class="header">
-            <div class="kenya-flag">
-                <div class="flag-stripe flag-black"></div>
-                <div class="flag-stripe flag-red"></div>
-                <div class="flag-stripe flag-white"></div>
-                <div class="flag-stripe flag-green"></div>
+        <div id="welcome-screen" class="screen">
+            <h1>Ikulu Run</h1>
+            <p>Test your knowledge of the Kenyan Constitution, elections, and civic matters!</p>
+            <div class="input-group">
+                <label for="player-name">Enter your name:</label>
+                <input type="text" id="player-name" placeholder="Your name">
             </div>
-            <h1 class="title">Journey 2 Ikulu</h1>
-            <p class="subtitle">The Road to State House</p>
+            <div class="button-group">
+                <button id="start-game" class="btn">Start Game</button>
+            </div>
         </div>
 
-        <div class="game-screen">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+        <div id="level-select" class="screen hidden">
+            <h2>Choose Difficulty Level</h2>
+            <div class="button-group">
+                <button id="easy-level" class="btn level-btn">Easy</button>
+                <button id="medium-level" class="btn level-btn">Medium</button>
+                <button id="hard-level" class="btn level-btn">Hard</button>
             </div>
+        </div>
 
-            <div class="level-indicator">
-                <span id="levelText">Welcome, Future Leader!</span>
-                <span id="timer" class="hidden">30</span>
-            </div>
-
-            <!-- Start Screen -->
-            <div id="startScreen" class="start-screen">
-                <h2>🏛️ Welcome to Journey 2 Ikulu! 🏛️</h2>
-                <p>You are a presidential candidate in Kenya's 2027 elections. Your journey to State House requires:</p>
-                <ul class="features-list">
-                    <li>📜 Mastering constitutional requirements</li>
-                    <li>🏛️ Understanding governance structures</li>
-                    <li>🗳️ Navigating electoral processes</li>
-                    <li>⚖️ Demonstrating leadership integrity</li>
-                </ul>
-                <p>Overcome campaign challenges by proving your civic knowledge at each stage of the journey!</p>
-                <button class="btn btn-primary" id="startButton">Begin Your Campaign</button>
-            </div>
-
-            <!-- Question Screen -->
-            <div id="questionScreen" class="hidden">
-                <div class="obstacle-warning" id="obstacleWarning"></div>
-                <div class="question-container">
-                    <div class="question" id="questionText"></div>
-                    <div class="options" id="optionsContainer"></div>
-                    <input type="text" class="input-answer hidden" id="inputAnswer" placeholder="Type your answer here...">
-                    <button class="btn btn-success hidden" id="submitAnswer">Submit Answer</button>
+        <div id="game-screen" class="screen hidden">
+            <div class="game-header">
+                <div class="player-info">
+                    <span id="display-name"></span>
+                    <span id="score">Score: 0</span>
                 </div>
-                <div class="feedback hidden" id="feedback"></div>
-                <button class="btn btn-primary hidden" id="nextButton">Continue Campaign</button>
-
-                <!-- Constitutional Reference -->
-                <div id="constitutional-reference" class="hidden">
-                    <h4>📜 Constitutional Reference</h4>
-                    <div id="constitution-ref"></div>
-                </div>
+                <div class="timer" id="timer">Time: 0</div>
+                <div class="level-display" id="current-level"></div>
             </div>
-
-            <!-- Voter Registration Check -->
-            <div id="voterRegistrationScreen" class="hidden">
-                <h2>🗳️ Campaign Checkpoint</h2>
-                <p>You've completed all knowledge challenges with <span id="finalScore"></span> correct answers!</p>
-                <p>Before proceeding to elections, verify your campaign eligibility:</p>
-
-                <div class="options">
-                    <div class="option" onclick="checkRegistration(true)">
-                        <h3>✅ My Campaign is Compliant</h3>
-                        <p>All documents meet IEBC requirements</p>
-                    </div>
-                    <div class="option" onclick="checkRegistration(false)">
-                        <h3>❌ Need Compliance Help</h3>
-                        <p>Show me election requirements</p>
-                    </div>
+            <div class="question-container">
+                <div id="question-text" class="question-text"></div>
+                <div id="options-container" class="options-container"></div>
+                <div id="fill-answer-container" class="fill-answer-container hidden">
+                    <input type="text" id="fill-answer" placeholder="Type your answer here">
+                    <button id="submit-fill-answer" class="btn">Submit</button>
                 </div>
-
-                <div id="registrationInfo" class="hidden">
-                    <h3>Presidential Candidate Requirements:</h3>
-                    <ol class="requirements-list">
-                        <li>Be a Kenyan citizen by birth</li>
-                        <li>Be qualified to stand for election as MP</li>
-                        <li>Nominated by a registered party or as independent</li>
-                        <li>Submit nomination papers with 2000 supporters</li>
-                        <li>Pay KSh 200,000 nomination fee</li>
-                    </ol>
-                    <p><em>Source: IEBC Presidential Election Regulations</em></p>
-                </div>
-
-                <button id="proceedToVote" class="btn btn-primary hidden" onclick="proceedToVote()">
-                    Proceed to Elections
-                </button>
+                <button id="next-question" class="btn hidden">Next Question</button>
             </div>
+            <div id="feedback" class="feedback hidden"></div>
+            <div id="fun-fact" class="fun-fact hidden"></div>
+        </div>
 
-            <!-- Voting Screen -->
-            <div id="votingScreen" class="hidden">
-                <h2>🏛️ ELECTION DAY - 2027 🏛️</h2>
-                <p class="election-subtitle">Kenya decides its next President:</p>
+        <div id="voter-registration" class="screen hidden">
+            <h2>Voter Registration Process</h2>
+            <div id="voter-content" class="voter-content"></div>
+            <button id="proceed-to-vote" class="btn hidden">Proceed to Voting</button>
+        </div>
 
-                <div class="ballot-container">
-                    <div class="candidate good-leader" onclick="vote('good')">
-                        <h3>👑 YOUR CAMPAIGN</h3>
-                        <p><strong>The Reform Candidate</strong></p>
-                        <p>✓ Constitutional compliance</p>
-                        <p>✓ Anti-corruption pledge</p>
-                        <p>✓ Youth empowerment</p>
-                        <p>✓ Healthcare reforms</p>
-                        <p>✓ Education transformation</p>
-                    </div>
+        <div id="voting-process" class="screen hidden">
+            <h2>Voting Process in Kenya</h2>
+            <div id="voting-steps" class="voting-steps"></div>
+            <button id="proceed-to-election" class="btn">Proceed to Presidential Election</button>
+        </div>
 
-                    <div class="candidate villain" onclick="vote('villain')">
-                        <h3>👨‍💼 STATUS QUO</h3>
-                        <p><strong>The Establishment</strong></p>
-                        <p>⚠️ Questionable integrity</p>
-                        <p>⚠️ Economic mismanagement</p>
-                        <p>⚠️ Governance failures</p>
-                        <p>⚠️ Broken promises</p>
-                        <p>⚠️ Resistance to change</p>
-                    </div>
+        <div id="presidential-election" class="screen hidden">
+            <h2>Presidential Election 2027</h2>
+            <div class="candidates">
+                <div class="candidate">
+                    <h3>You</h3>
+                    <div id="player-qualities"></div>
+                </div>
+                <div class="candidate villain">
+                    <h3>William Ruto</h3>
+                    <div id="ruto-qualities"></div>
                 </div>
             </div>
-
-            <!-- Victory Screen -->
-            <div id="victoryScreen" class="hidden victory-screen">
-                <div class="statehouse-icon">🏛️</div>
-                <h2 id="victoryTitle"></h2>
-                <div id="victoryMessage"></div>
-                <button class="btn btn-success" onclick="restartGame()">Run Again</button>
+            <div class="election-question">
+                <p>Who should be the next President of Kenya?</p>
+                <div class="button-group">
+                    <button id="choose-player" class="btn">Choose Me</button>
+                    <button id="choose-ruto" class="btn">Choose Ruto</button>
+                </div>
             </div>
+        </div>
+
+        <div id="results-screen" class="screen hidden">
+            <h2 id="result-title">Election Results</h2>
+            <div id="result-content" class="result-content"></div>
+            <button id="play-again" class="btn">Play Again</button>
         </div>
     </div>
 
+    <script src="constitution.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
