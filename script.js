@@ -106,6 +106,40 @@ function checkRegistration(isRegistered) {
     document.getElementById('proceedToVote').classList.remove('hidden');
   }
 }
+// Enhanced game state
+let gameState = {
+  level: 'easy',
+  questionIndex: 0,
+  score: 0,
+  registeredVoter: null
+};
+
+// Timer for hard level
+let timer = {
+  timeLeft: 30,
+  interval: null
+};
+
+function startHardLevel() {
+  // Start 30-second timer for hard questions
+  timer.interval = setInterval(() => {
+    timer.timeLeft--;
+    document.getElementById('timer').textContent = timer.timeLeft;
+    if(timer.timeLeft <= 0) timeUp();
+  }, 1000);
+}
+
+function showConstitutionalReference(article) {
+  // Display relevant constitutional text during questions
+  const ref = constitution[article.chapter].find(a => a.article === article.article);
+  document.getElementById('constitution-ref').innerHTML = `
+    <h4>${ref.title} (Article ${ref.article})</h4>
+    <p>${ref.text.substring(0, 150)}...</p>
+    <button onclick="showFullArticle('${article.chapter}', '${article.article}')">
+      Read Full Article
+    </button>
+  `;
+}
 
 // Updated vote function
 function vote(choice) {
