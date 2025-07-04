@@ -36,25 +36,10 @@
             backdrop-filter: blur(10px);
         }
 
-        .kenya-flag {
-            width: 60px;
-            height: 40px;
+        .kenya-flag-emoji {
+            font-size: 3em;
             margin: 0 auto 15px;
-            position: relative;
-            border-radius: 5px;
-            overflow: hidden;
         }
-
-        .flag-stripe {
-            height: 25%;
-            width: 100%;
-        }
-
-     .flag-black { background: #000; }
-.flag-white { background: #fff; }
-.flag-red { background: #CE1126; }
-.flag-white-2 { background: #fff; }
-.flag-green { background: #006A4E; }
 
         .title {
             font-size: 2.5em;
@@ -380,12 +365,7 @@
 <body>
     <div class="game-container">
         <div class="header">
-            <div class="kenya-flag">
-                <div class="flag-stripe flag-black"></div>
-                <div class="flag-stripe flag-red"></div>
-                <div class="flag-stripe flag-white"></div>
-                <div class="flag-stripe flag-green"></div>
-            </div>
+            <div class="kenya-flag-emoji">🇰🇪</div>
             <h1 class="title">Ikulu Run</h1>
             <p class="subtitle">A Kenyan Constitution & History Challenge</p>
         </div>
@@ -394,7 +374,7 @@
             <div class="progress-bar">
                 <div class="progress-fill" id="progressBar" style="width: 0%"></div>
             </div>
-            
+
             <div class="level-indicator">
                 <span id="levelText">Welcome, Future Leader!</span>
             </div>
@@ -443,7 +423,7 @@
             <div id="votingScreen" class="hidden">
                 <h2 style="text-align: center; color: #FFD700; margin-bottom: 30px;">🏛️ You've Reached State House! 🏛️</h2>
                 <p style="text-align: center; font-size: 1.2em; margin-bottom: 30px;">Congratulations! You've proven your knowledge of Kenya's constitution and history. Now, make your final decision:</p>
-                
+
                 <div class="ballot-container">
                     <div class="candidate good-leader" onclick="vote('good')">
                         <h3>👑 David Maraga</h3>
@@ -454,7 +434,7 @@
                         <p>✓ Ensures free and fair elections</p>
                         <p>✓ Fights corruption</p>
                     </div>
-                    
+
                     <div class="candidate villain" onclick="vote('villain')">
                         <h3>👨‍💼 William Ruto</h3>
                         <p><strong>Undermines Democracy</strong></p>
@@ -597,7 +577,7 @@
                 },
                 {
                     type: "multiple",
-                    obstacle: "Voter Registration",
+                    obstacle: "Voter Verification",
                     question: "Where do Kenyans register to vote?",
                     options: ["IEBC office", "Police station", "County office", "Anywhere"],
                     correct: 0,
@@ -877,11 +857,11 @@
             gameState.currentQuestion = fromSavedState ? gameState.currentQuestion : 0;
             gameState.score = fromSavedState ? gameState.score : 0;
             gameState.questions = questionsByLevel[level];
-            
+
             if (!fromSavedState) {
                 saveGameState();
             }
-            
+
             document.getElementById('levelSelectScreen').classList.add('hidden');
             document.getElementById('questionScreen').classList.remove('hidden');
             showQuestion();
@@ -891,22 +871,22 @@
         function showQuestion() {
             const question = gameState.questions[gameState.currentQuestion];
             const progressPercent = ((gameState.currentQuestion + 1) / gameState.questions.length) * 100;
-            
+
             document.getElementById('progressBar').style.width = progressPercent + '%';
             document.getElementById('levelText').textContent = `${gameState.currentLevel.toUpperCase()} Level - Question ${gameState.currentQuestion + 1} of ${gameState.questions.length}`;
             document.getElementById('obstacleWarning').textContent = `⚠️ Obstacle: ${question.obstacle}`;
             document.getElementById('questionText').textContent = question.question;
-            
+
             // Clear previous feedback
             document.getElementById('feedback').classList.add('hidden');
             document.getElementById('nextButton').classList.add('hidden');
-            
+
             if (question.type === "multiple") {
                 showMultipleChoice(question);
             } else {
                 showFillAnswer(question);
             }
-            
+
             saveGameState();
         }
 
@@ -915,10 +895,10 @@
             document.getElementById('optionsContainer').classList.remove('hidden');
             document.getElementById('inputAnswer').classList.add('hidden');
             document.getElementById('submitAnswer').classList.add('hidden');
-            
+
             const container = document.getElementById('optionsContainer');
             container.innerHTML = '';
-            
+
             question.options.forEach((option, index) => {
                 const optionDiv = document.createElement('div');
                 optionDiv.className = 'option';
@@ -933,7 +913,7 @@
             document.getElementById('optionsContainer').classList.add('hidden');
             document.getElementById('inputAnswer').classList.remove('hidden');
             document.getElementById('submitAnswer').classList.remove('hidden');
-            
+
             document.getElementById('inputAnswer').value = '';
             document.getElementById('inputAnswer').focus();
         }
@@ -942,7 +922,7 @@
         function selectOption(selectedIndex) {
             const question = gameState.questions[gameState.currentQuestion];
             const options = document.querySelectorAll('.option');
-            
+
             options.forEach((option, index) => {
                 if (index === question.correct) {
                     option.classList.add('correct');
@@ -951,10 +931,10 @@
                 }
                 option.style.pointerEvents = 'none';
             });
-            
+
             const feedback = document.getElementById('feedback');
             feedback.classList.remove('hidden');
-            
+
             if (selectedIndex === question.correct) {
                 feedback.textContent = `Correct! ${question.explanation}`;
                 feedback.classList.add('correct');
@@ -965,7 +945,7 @@
                 feedback.classList.add('incorrect');
                 feedback.classList.remove('correct');
             }
-            
+
             document.getElementById('nextButton').classList.remove('hidden');
             saveGameState();
         }
@@ -976,7 +956,7 @@
             const userAnswer = document.getElementById('inputAnswer').value.trim();
             const feedback = document.getElementById('feedback');
             feedback.classList.remove('hidden');
-            
+
             if (userAnswer.toLowerCase() === question.answer.toLowerCase()) {
                 feedback.textContent = `Correct! ${question.explanation}`;
                 feedback.classList.add('correct');
@@ -987,7 +967,7 @@
                 feedback.classList.add('incorrect');
                 feedback.classList.remove('correct');
             }
-            
+
             document.getElementById('nextButton').classList.remove('hidden');
             document.getElementById('submitAnswer').classList.add('hidden');
             saveGameState();
@@ -996,7 +976,7 @@
         // Move to next question
         function nextQuestion() {
             gameState.currentQuestion++;
-            
+
             if (gameState.currentQuestion < gameState.questions.length) {
                 showQuestion();
             } else {
@@ -1017,15 +997,15 @@
             document.getElementById('votingScreen').classList.add('hidden');
             const victoryScreen = document.getElementById('victoryScreen');
             const victoryMessage = document.getElementById('victoryMessage');
-            
+
             victoryScreen.classList.remove('hidden');
-            
+
             if (choice === 'good') {
                 victoryMessage.textContent = `You scored ${gameState.score} out of ${gameState.questions.length} and chose David Maraga! Kenya's future is bright with leaders who respect the constitution and rule of law.`;
             } else {
-                victoryMessage.textContent = `Despite scoring ${gameState.score} out of ${gameState.questions.length}, you chose William Ruto. Kenya deserves better leadership that respects democratic values!`;
+                victoryMessage.textContent = `Despite scoring ${gameState.score} out of ${gameState.questions.length}, you chose William Ruto. Unfortunately you lost. Ruto is not fit to be president of Kenya!`;
             }
-            
+
             clearGameState();
         }
 
