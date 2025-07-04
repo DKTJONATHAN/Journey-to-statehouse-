@@ -1,4 +1,4 @@
-/* styles.css - Professional Version */
+/* styles.css - Professional Version with All Buttons at Bottom */
 * {
     margin: 0;
     padding: 0;
@@ -11,14 +11,19 @@ body {
     min-height: 100vh;
     color: white;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .game-container {
     max-width: 800px;
-    margin: 0 auto;
+    width: 100%;
     padding: 20px;
     min-height: 100vh;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .header {
@@ -74,6 +79,10 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     animation: fadeIn 0.5s ease-in;
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 70vh;
+    position: relative;
 }
 
 @keyframes fadeIn {
@@ -123,6 +132,7 @@ body {
 
 .question-container {
     margin-bottom: 20px;
+    flex-grow: 1;
 }
 
 .question-text {
@@ -180,6 +190,18 @@ body {
     color: rgba(255, 255, 255, 0.7);
 }
 
+/* Button Container Styles */
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Main Button Styles */
 .btn {
     padding: 15px 30px;
     font-size: 1.1em;
@@ -190,7 +212,8 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin: 10px 5px;
+    min-width: 200px;
+    text-align: center;
 }
 
 .btn-primary {
@@ -213,6 +236,13 @@ body {
     background: linear-gradient(45deg, #45a049, #5cb85c);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+}
+
+/* Back Button at Bottom */
+.back-btn {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    order: 1; /* Ensures it appears after other buttons */
 }
 
 .feedback {
@@ -300,6 +330,7 @@ body {
     font-size: 1.2em;
     line-height: 1.6;
     margin: 20px 0;
+    flex-grow: 1;
 }
 
 .result-content ul {
@@ -309,14 +340,6 @@ body {
 
 .result-content li {
     margin-bottom: 10px;
-}
-
-.back-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
 }
 
 .score-display {
@@ -361,6 +384,7 @@ body {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     margin: 20px 0;
+    flex-grow: 1;
 }
 
 .voter-content h3, .voting-steps h3 {
@@ -389,6 +413,7 @@ body {
     
     .screen {
         padding: 20px;
+        min-height: 80vh;
     }
     
     .candidates {
@@ -397,5 +422,14 @@ body {
     
     .candidate {
         width: 100%;
+    }
+    
+    .btn {
+        min-width: 100%;
+    }
+    
+    .button-container {
+        flex-direction: column;
+        gap: 10px;
     }
 }
