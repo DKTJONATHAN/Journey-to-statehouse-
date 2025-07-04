@@ -1,526 +1,399 @@
-// Game levels with all 45 questions (15 per level)
-const levels = {
-  easy: [
-    {
-      type: "multiple",
-      obstacle: "Constitutional Basics",
-      question: "When was Kenya's current constitution promulgated?",
-      options: ["2005", "2010", "2015", "2020"],
-      correct: 1,
-      explanation: "The 2010 Constitution was promulgated on August 27, 2010.",
-      timer: null,
-      reference: "Constitution of Kenya (2010) Preamble"
-    },
-    {
-      type: "fill",
-      obstacle: "Historical Knowledge",
-      question: "Kenya gained independence in the year _____.",
-      answer: "1963",
-      explanation: "Kenya became independent on December 12, 1963.",
-      timer: null,
-      reference: "Kenya Independence Act 1963"
-    },
-    {
-      type: "multiple",
-      obstacle: "Presidential Powers",
-      question: "Which article establishes the presidency?",
-      options: ["Article 130", "Article 131", "Article 132", "Article 133"],
-      correct: 1,
-      explanation: "Article 131 establishes the office of the President.",
-      timer: 20,
-      reference: "Constitution of Kenya, Article 131"
-    },
-    {
-      type: "fill",
-      obstacle: "Historical Leaders",
-      question: "The first Prime Minister of Kenya was _____.",
-      answer: "Jomo Kenyatta",
-      explanation: "Jomo Kenyatta served as Prime Minister from 1963-1964 before becoming President.",
-      timer: null,
-      reference: "Kenya Independence Constitution 1963"
-    },
-    {
-      type: "multiple",
-      obstacle: "Devolution",
-      question: "How many counties does Kenya have?",
-      options: ["42", "45", "47", "50"],
-      correct: 2,
-      explanation: "Kenya has 47 counties established under the 2010 Constitution.",
-      timer: 15,
-      reference: "Constitution of Kenya, Article 6(1)"
-    },
-    {
-      type: "multiple",
-      obstacle: "Constitutional History",
-      question: "Which document preceded the 2010 Constitution?",
-      options: ["Lancaster Constitution", "Bomas Draft", "Wako Draft", "Independence Constitution"],
-      correct: 3,
-      explanation: "The Independence Constitution of 1963 was replaced by the 2010 Constitution.",
-      timer: null,
-      reference: "Constitutional History of Kenya"
-    },
-    {
-      type: "fill",
-      obstacle: "Constitutional Process",
-      question: "The _____ Commission drafted the 2010 Constitution.",
-      answer: "Committee of Experts",
-      explanation: "The Committee of Experts (CoE) was established to draft the constitution.",
-      timer: 20,
-      reference: "Constitution of Kenya Review Act 2008"
-    },
-    {
-      type: "multiple",
-      obstacle: "Government Structure",
-      question: "Which body interprets the Constitution?",
-      options: ["Parliament", "Judiciary", "Executive", "County Assemblies"],
-      correct: 1,
-      explanation: "The Judiciary is established under Chapter 10 as the interpreter of the Constitution.",
-      timer: null,
-      reference: "Constitution of Kenya, Article 159"
-    },
-    {
-      type: "fill",
-      obstacle: "National Symbols",
-      question: "The national motto of Kenya is '_____'.",
-      answer: "Harambee",
-      explanation: "Harambee means 'pulling together' in Swahili.",
-      timer: null,
-      reference: "National Symbols Act"
-    },
-    {
-      type: "multiple",
-      obstacle: "Legislature",
-      question: "Which article establishes the Senate?",
-      options: ["Article 93", "Article 96", "Article 98", "Article 100"],
-      correct: 0,
-      explanation: "Article 93 establishes both Houses of Parliament.",
-      timer: 20,
-      reference: "Constitution of Kenya, Article 93"
-    },
-    {
-      type: "multiple",
-      obstacle: "Political History",
-      question: "Who was Kenya's first female MP?",
-      options: ["Grace Onyango", "Wangari Maathai", "Julia Ojiambo", "Phoebe Asiyo"],
-      correct: 0,
-      explanation: "Grace Onyango became the first female MP in 1969.",
-      timer: 15,
-      reference: "Parliamentary History of Kenya"
-    },
-    {
-      type: "fill",
-      obstacle: "Legal Precedents",
-      question: "The _____ case established judicial review in Kenya.",
-      answer: "Marbury v Madison",
-      explanation: "While American, this precedent influenced Kenya's judicial review principles.",
-      timer: null,
-      reference: "Judicial Precedents"
-    },
-    {
-      type: "multiple",
-      obstacle: "Political Systems",
-      question: "Which year did Kenya become a one-party state?",
-      options: ["1964", "1966", "1969", "1982"],
-      correct: 3,
-      explanation: "Kenya became a de jure one-party state in 1982.",
-      timer: 25,
-      reference: "Constitution of Kenya (Amendment) Act 1982"
-    },
-    {
-      type: "fill",
-      obstacle: "Colonial History",
-      question: "The _____ Rebellion was a major anti-colonial uprising.",
-      answer: "Mau Mau",
-      explanation: "The Mau Mau Uprising occurred from 1952-1960.",
-      timer: null,
-      reference: "Kenyan Colonial History"
-    },
-    {
-      type: "multiple",
-      obstacle: "Rights and Freedoms",
-      question: "Which article establishes the Bill of Rights?",
-      options: ["Chapter 2", "Chapter 4", "Chapter 6", "Chapter 9"],
-      correct: 1,
-      explanation: "Chapter 4 contains the comprehensive Bill of Rights.",
-      timer: 20,
-      reference: "Constitution of Kenya, Chapter 4"
-    }
-  ],
-  medium: [
-    {
-      type: "multiple",
-      obstacle: "Judicial System",
-      question: "Who was the first Chief Justice under the 2010 Constitution?",
-      options: ["Evan Gicheru", "Willy Mutunga", "David Maraga", "Bernard Chunga"],
-      correct: 1,
-      explanation: "Dr. Willy Mutunga was the first CJ under the new constitution.",
-      timer: 20,
-      reference: "Judiciary Transformation Framework"
-    },
-    {
-      type: "fill",
-      obstacle: "Devolution",
-      question: "The _____ system was introduced under the 2010 Constitution.",
-      answer: "devolved",
-      explanation: "Devolution created county governments under Chapter 11.",
-      timer: null,
-      reference: "Constitution of Kenya, Chapter 11"
-    },
-    {
-      type: "multiple",
-      obstacle: "Government Structure",
-      question: "Which commission is responsible for implementing devolution?",
-      options: ["CIC", "CRA", "IEBC", "PSC"],
-      correct: 1,
-      explanation: "The Commission on Revenue Allocation (CRA) oversees devolution funds.",
-      timer: 15,
-      reference: "Constitution of Kenya, Article 215"
-    },
-    {
-      type: "fill",
-      obstacle: "Constitutional Amendments",
-      question: "The _____ Amendment introduced the position of Prime Minister in 2008.",
-      answer: "Constitution of Kenya (Amendment)",
-      explanation: "This temporary amendment created the PM position after the 2007-08 crisis.",
-      timer: 25,
-      reference: "National Accord and Reconciliation Act 2008"
-    },
-    {
-      type: "multiple",
-      obstacle: "Judicial System",
-      question: "What is the retirement age for Supreme Court judges?",
-      options: ["65 years", "70 years", "75 years", "No mandatory retirement"],
-      correct: 1,
-      explanation: "Article 167(1) sets retirement at 70 years for Supreme Court judges.",
-      timer: null,
-      reference: "Constitution of Kenya, Article 167(1)"
-    },
-    {
-      type: "multiple",
-      obstacle: "Security Organs",
-      question: "Which article establishes the National Police Service?",
-      options: ["Article 243", "Article 245", "Article 249", "Article 252"],
-      correct: 0,
-      explanation: "Article 243 establishes the National Police Service.",
-      timer: 20,
-      reference: "Constitution of Kenya, Article 243"
-    },
-    {
-      type: "fill",
-      obstacle: "Legal Doctrine",
-      question: "The _____ case established the basic structure doctrine in Kenya.",
-      answer: "Njoya",
-      explanation: "Njoya v Attorney General (2004) established basic structure principles.",
-      timer: 30,
-      reference: "Njoya v Attorney General [2004]"
-    },
-    {
-      type: "multiple",
-      obstacle: "Government Structure",
-      question: "Which is NOT a national security organ?",
-      options: ["Kenya Defence Forces", "National Intelligence Service", "National Police Service", "Ethics and Anti-Corruption Commission"],
-      correct: 3,
-      explanation: "EACC is not listed as a national security organ under Article 239.",
-      timer: null,
-      reference: "Constitution of Kenya, Article 239"
-    },
-    {
-      type: "fill",
-      obstacle: "Constitutional Implementation",
-      question: "The _____ Commission oversees implementation of the Constitution.",
-      answer: "Constitution Implementation",
-      explanation: "The CIC was established to oversee implementation of the new constitution.",
-      timer: 20,
-      reference: "Constitution of Kenya, Sixth Schedule"
-    },
-    {
-      type: "multiple",
-      obstacle: "Electoral System",
-      question: "Which article establishes the Independent Electoral and Boundaries Commission?",
-      options: ["Article 88", "Article 89", "Article 90", "Article 91"],
-      correct: 0,
-      explanation: "Article 88 establishes the IEBC.",
-      timer: 15,
-      reference: "Constitution of Kenya, Article 88"
-    },
-    {
-      type: "multiple",
-      obstacle: "Voting Rights",
-      question: "What is the minimum voting age in Kenya?",
-      options: ["16 years", "18 years", "21 years", "25 years"],
-      correct: 1,
-      explanation: "Article 83 establishes 18 years as the minimum voting age.",
-      timer: null,
-      reference: "Constitution of Kenya, Article 83"
-    },
-    {
-      type: "fill",
-      obstacle: "Gender Rights",
-      question: "The _____ system ensures no more than 2/3 of any gender in elective bodies.",
-      answer: "gender rule",
-      explanation: "Article 81(b) establishes the gender representation principle.",
-      timer: 25,
-      reference: "Constitution of Kenya, Article 81(b)"
-    },
-    {
-      type: "multiple",
-      obstacle: "Devolution",
-      question: "Which is NOT a function of county governments?",
-      options: ["Agriculture", "Foreign affairs", "County health services", "Cultural activities"],
-      correct: 1,
-      explanation: "Foreign affairs is a national government function (Fourth Schedule).",
-      timer: 20,
-      reference: "Constitution of Kenya, Fourth Schedule"
-    },
-    {
-      type: "fill",
-      obstacle: "Public Finance",
-      question: "The _____ clause protects constitutionally established funds from arbitrary withdrawal.",
-      answer: "protected funds",
-      explanation: "Article 206 establishes protected funds that can't be withdrawn without authorization.",
-      timer: null,
-      reference: "Constitution of Kenya, Article 206"
-    },
-    {
-      type: "multiple",
-      obstacle: "Governance Principles",
-      question: "Which article establishes the principle of public participation?",
-      options: ["Article 1", "Article 10", "Article 35", "Article 201"],
-      correct: 1,
-      explanation: "Article 10 includes public participation as a national value.",
-      timer: 15,
-      reference: "Constitution of Kenya, Article 10"
-    }
-  ],
-  hard: [
-    {
-      type: "multiple",
-      obstacle: "Electoral Law",
-      question: "Which case established that presidential election petitions must be heard within 14 days?",
-      options: ["Raila v IEBC", "Maina Kiai case", "Marbial case", "Njoya case"],
-      correct: 1,
-      explanation: "Maina Kiai case set the 14-day timeline for presidential petitions.",
-      timer: 30,
-      reference: "Maina Kiai v IEBC [2017]"
-    },
-    {
-      type: "fill",
-      obstacle: "Constitutional Law",
-      question: "The _____ doctrine prevents Parliament from amending basic constitutional structures.",
-      answer: "basic structure",
-      explanation: "Established in Njoya case, limiting parliamentary amendment powers.",
-      timer: null,
-      reference: "Njoya v Attorney General [2004]"
-    },
-    {
-      type: "multiple",
-      obstacle: "Presidential Powers",
-      question: "Which article establishes the procedure for removing the President?",
-      options: ["Article 144", "Article 145", "Article 146", "Article 147"],
-      correct: 1,
-      explanation: "Article 145 establishes the impeachment procedure.",
-      timer: 25,
-      reference: "Constitution of Kenya, Article 145"
-    },
-    {
-      type: "fill",
-      obstacle: "Constitutional Law",
-      question: "The _____ test is used to determine if a limitation of rights is constitutional.",
-      answer: "proportionality",
-      explanation: "Article 24 requires limitations to be reasonable and justifiable.",
-      timer: 30,
-      reference: "Constitution of Kenya, Article 24"
-    },
-    {
-      type: "multiple",
-      obstacle: "Electoral Law",
-      question: "Which case established the principle that IEBC servers must be open for scrutiny?",
-      options: ["Raila 2013", "Raila 2017", "Maina Kiai", "Martha Karua case"],
-      correct: 1,
-      explanation: "Raila 2017 Supreme Court ruling required server access.",
-      timer: null,
-      reference: "Raila Odinga v IEBC [2017]"
-    },
-    {
-      type: "multiple",
-      obstacle: "Constitutional Amendments",
-      question: "Which article establishes the procedure for constitutional amendment by popular initiative?",
-      options: ["Article 255", "Article 256", "Article 257", "Article 258"],
-      correct: 2,
-      explanation: "Article 257 establishes the popular initiative process.",
-      timer: 20,
-      reference: "Constitution of Kenya, Article 257"
-    },
-    {
-      type: "fill",
-      obstacle: "Constitutional Interpretation",
-      question: "The _____ clause in Article 259 requires interpreting the Constitution in a manner that promotes its purposes.",
-      answer: "purposive",
-      explanation: "Article 259 requires a purposive interpretation of the Constitution.",
-      timer: 25,
-      reference: "Constitution of Kenya, Article 259"
-    },
-    {
-      type: "multiple",
-      obstacle: "Electoral Law",
-      question: "Which case established that presidential election results must be verifiable?",
-      options: ["Raila 2013", "Raila 2017", "Maina Kiai", "Martha Karua 2022"],
-      correct: 1,
-      explanation: "Raila 2017 Supreme Court ruling established the verifiability principle.",
-      timer: 30,
-      reference: "Raila Odinga v IEBC [2017]"
-    },
-    {
-      type: "fill",
-      obstacle: "International Law",
-      question: "The _____ principle requires that constitutional interpretation considers international law.",
-      answer: "internationalist",
-      explanation: "Article 2(5) incorporates international law into Kenyan law.",
-      timer: null,
-      reference: "Constitution of Kenya, Article 2(5)"
-    },
-    {
-      type: "multiple",
-      obstacle: "Intergovernmental Relations",
-      question: "Which article establishes the procedure for resolving conflicts between national and county governments?",
-      options: ["Article 187", "Article 189", "Article 191", "Article 193"],
-      correct: 2,
-      explanation: "Article 191 establishes the conflict resolution mechanism.",
-      timer: 25,
-      reference: "Constitution of Kenya, Article 191"
-    },
-    {
-      type: "multiple",
-      obstacle: "Human Rights",
-      question: "Which article establishes the Kenya National Human Rights Commission?",
-      options: ["Article 59", "Article 62", "Article 65", "Article 68"],
-      correct: 0,
-      explanation: "Article 59 establishes the KNHRC.",
-      timer: null,
-      reference: "Constitution of Kenya, Article 59"
-    },
-    {
-      type: "fill",
-      obstacle: "Judicial System",
-      question: "The _____ principle requires courts to develop the law in line with the Constitution's spirit.",
-      answer: "transformative",
-      explanation: "Article 159(2)(e) requires courts to promote the Constitution's purposes.",
-      timer: 30,
-      reference: "Constitution of Kenya, Article 159(2)(e)"
-    },
-    {
-      type: "multiple",
-      obstacle: "Public Finance",
-      question: "Which article establishes the Contingencies Fund?",
-      options: ["Article 203", "Article 206", "Article 208", "Article 210"],
-      correct: 2,
-      explanation: "Article 208 establishes the Contingencies Fund.",
-      timer: 20,
-      reference: "Constitution of Kenya, Article 208"
-    },
-    {
-      type: "fill",
-      obstacle: "Electoral System",
-      question: "The _____ system allocates parliamentary seats based on population and geographical size.",
-      answer: "mixed member",
-      explanation: "Article 90 establishes the mixed member system for parliamentary elections.",
-      timer: null,
-      reference: "Constitution of Kenya, Article 90"
-    },
-    {
-      type: "multiple",
-      obstacle: "Constitutional Supremacy",
-      question: "Which article declares the Constitution as the supreme law of Kenya?",
-      options: ["Article 1", "Article 2", "Article 3", "Article 4"],
-      correct: 1,
-      explanation: "Article 2 establishes constitutional supremacy.",
-      timer: 15,
-      reference: "Constitution of Kenya, Article 2"
-    }
-  ]
-};
-
 // Game state
-let gameState = {
-  level: 'easy',
-  questionIndex: 0,
-  score: 0,
-  registeredVoter: null,
-  completedLevels: [],
-  attempts: 0
-};
-
-// Timer
-let timer = {
-  timeLeft: 30,
-  interval: null
+const gameState = {
+    playerName: '',
+    currentLevel: '',
+    score: 0,
+    currentQuestionIndex: 0,
+    timer: null,
+    timeLeft: 0,
+    questions: [],
+    isRegisteredVoter: false
 };
 
 // DOM elements
-const elements = {
-  startScreen: document.getElementById('startScreen'),
-  questionScreen: document.getElementById('questionScreen'),
-  votingScreen: document.getElementById('votingScreen'),
-  victoryScreen: document.getElementById('victoryScreen'),
-  voterRegistrationScreen: document.getElementById('voterRegistrationScreen'),
-  registrationInfo: document.getElementById('registrationInfo'),
-  proceedToVote: document.getElementById('proceedToVote'),
-  progressBar: document.getElementById('progressBar'),
-  levelText: document.getElementById('levelText'),
-  obstacleWarning: document.getElementById('obstacleWarning'),
-  questionText: document.getElementById('questionText'),
-  optionsContainer: document.getElementById('optionsContainer'),
-  inputAnswer: document.getElementById('inputAnswer'),
-  submitAnswer: document.getElementById('submitAnswer'),
-  feedback: document.getElementById('feedback'),
-  nextButton: document.getElementById('nextButton'),
-  timerDisplay: document.getElementById('timer'),
-  constitutionalReference: document.getElementById('constitutional-reference'),
-  constitutionRef: document.getElementById('constitution-ref'),
-  finalScore: document.getElementById('finalScore'),
-  victoryTitle: document.getElementById('victoryTitle'),
-  victoryMessage: document.getElementById('victoryMessage')
-};
+const welcomeScreen = document.getElementById('welcome-screen');
+const levelSelectScreen = document.getElementById('level-select');
+const gameScreen = document.getElementById('game-screen');
+const voterRegistrationScreen = document.getElementById('voter-registration');
+const votingProcessScreen = document.getElementById('voting-process');
+const presidentialElectionScreen = document.getElementById('presidential-election');
+const resultsScreen = document.getElementById('results-screen');
 
-// Initialize game
-function initGame() {
-  document.getElementById('startButton').addEventListener('click', startGame);
-  elements.submitAnswer.addEventListener('click', checkAnswer);
-  elements.nextButton.addEventListener('click', nextQuestion);
+const playerNameInput = document.getElementById('player-name');
+const startGameBtn = document.getElementById('start-game');
+const easyLevelBtn = document.getElementById('easy-level');
+const mediumLevelBtn = document.getElementById('medium-level');
+const hardLevelBtn = document.getElementById('hard-level');
 
-  // Hide all screens except start
-  hideAllScreens();
-  elements.startScreen.classList.remove('hidden');
-}
+const displayName = document.getElementById('display-name');
+const scoreDisplay = document.getElementById('score');
+const timerDisplay = document.getElementById('timer');
+const currentLevelDisplay = document.getElementById('current-level');
+const questionText = document.getElementById('question-text');
+const optionsContainer = document.getElementById('options-container');
+const fillAnswerContainer = document.getElementById('fill-answer-container');
+const fillAnswerInput = document.getElementById('fill-answer');
+const submitFillAnswerBtn = document.getElementById('submit-fill-answer');
+const nextQuestionBtn = document.getElementById('next-question');
+const feedbackDisplay = document.getElementById('feedback');
+const funFactDisplay = document.getElementById('fun-fact');
 
-function hideAllScreens() {
-  elements.startScreen.classList.add('hidden');
-  elements.questionScreen.classList.add('hidden');
-  elements.votingScreen.classList.add('hidden');
-  elements.victoryScreen.classList.add('hidden');
-  elements.voterRegistrationScreen.classList.add('hidden');
-}
+const voterContent = document.getElementById('voter-content');
+const proceedToVoteBtn = document.getElementById('proceed-to-vote');
+const votingSteps = document.getElementById('voting-steps');
+const proceedToElectionBtn = document.getElementById('proceed-to-election');
 
-// Start game
+const playerQualities = document.getElementById('player-qualities');
+const rutoQualities = document.getElementById('ruto-qualities');
+const choosePlayerBtn = document.getElementById('choose-player');
+const chooseRutoBtn = document.getElementById('choose-ruto');
+
+const resultTitle = document.getElementById('result-title');
+const resultContent = document.getElementById('result-content');
+const playAgainBtn = document.getElementById('play-again');
+
+// Event listeners
+startGameBtn.addEventListener('click', startGame);
+easyLevelBtn.addEventListener('click', () => selectLevel('easy'));
+mediumLevelBtn.addEventListener('click', () => selectLevel('medium'));
+hardLevelBtn.addEventListener('click', () => selectLevel('hard'));
+submitFillAnswerBtn.addEventListener('click', checkFillAnswer);
+nextQuestionBtn.addEventListener('click', nextQuestion);
+proceedToVoteBtn.addEventListener('click', showVotingProcess);
+proceedToElectionBtn.addEventListener('click', showPresidentialElection);
+choosePlayerBtn.addEventListener('click', () => showElectionResults(true));
+chooseRutoBtn.addEventListener('click', () => showElectionResults(false));
+playAgainBtn.addEventListener('click', resetGame);
+
+// Start game function
 function startGame() {
-  gameState = {
-    level: 'easy',
-    questionIndex: 0,
-    score: 0,
-    registeredVoter: null,
-    completedLevels: [],
-    attempts: 0
-  };
-
-  hideAllScreens();
-  elements.questionScreen.classList.remove('hidden');
-  showQuestion();
+    const name = playerNameInput.value.trim();
+    if (name === '') {
+        alert('Please enter your name to continue');
+        return;
+    }
+    
+    gameState.playerName = name;
+    welcomeScreen.classList.add('hidden');
+    levelSelectScreen.classList.remove('hidden');
 }
 
-// Show current question
-function showQuestion() {
-  const question = levels[gameState.level][gameState.questionIndex];
-  const progressPercent = ((gameState.questionIndex + 1) / levels[gameState.level].length) * 100;
+// Select level function
+function selectLevel(level) {
+    gameState.currentLevel = level;
+    gameState.questions = getQuestionsForLevel(level);
+    gameState.currentQuestionIndex = 0;
+    gameState.score = 0;
+    
+    displayName.textContent = gameState.playerName;
+    scoreDisplay.textContent = `Score: ${gameState.score}`;
+    currentLevelDisplay.textContent = `Level: ${level.charAt(0).toUpperCase() + level.slice(1)}`;
+    
+    levelSelectScreen.classList.add('hidden');
+    gameScreen.classList.remove('hidden');
+    
+    displayQuestion();
+}
 
-  elements.progressBar.style.width = `${progressPercent}%`;
-  elements.levelText.textContent = `${gameState.level.toUpperCas
+// Get questions for selected level
+function getQuestionsForLevel(level) {
+    // Get questions from constitution.js based on level
+    const allQuestions = [...constitutionQuestions, ...electionQuestions, ...financeBillQuestions];
+    
+    // Filter by level and shuffle
+    const levelQuestions = allQuestions.filter(q => q.level === level);
+    return shuffleArray(levelQuestions).slice(0, 15);
+}
+
+// Display current question
+function displayQuestion() {
+    if (gameState.currentQuestionIndex >= gameState.questions.length) {
+        startElectionProcess();
+        return;
+    }
+    
+    const question = gameState.questions[gameState.currentQuestionIndex];
+    questionText.textContent = question.question;
+    
+    // Reset UI elements
+    optionsContainer.innerHTML = '';
+    fillAnswerContainer.classList.add('hidden');
+    feedbackDisplay.classList.add('hidden');
+    funFactDisplay.classList.add('hidden');
+    nextQuestionBtn.classList.add('hidden');
+    
+    // Start timer if question has one
+    if (question.timer) {
+        startTimer(question.timer);
+    } else {
+        timerDisplay.textContent = '';
+    }
+    
+    // Display question based on type
+    if (question.type === 'multiple') {
+        question.options.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.textContent = option;
+            button.classList.add('option-btn');
+            button.addEventListener('click', () => checkAnswer(index));
+            optionsContainer.appendChild(button);
+        });
+    } else if (question.type === 'fill') {
+        fillAnswerContainer.classList.remove('hidden');
+        fillAnswerInput.value = '';
+        fillAnswerInput.focus();
+    }
+    
+    // Show fun fact if available (20% chance)
+    if (question.funFact && Math.random() < 0.2) {
+        setTimeout(() => {
+            funFactDisplay.textContent = `Fun Fact: ${question.funFact}`;
+            funFactDisplay.classList.remove('hidden');
+        }, 1000);
+    }
+}
+
+// Start timer for timed questions
+function startTimer(seconds) {
+    gameState.timeLeft = seconds;
+    timerDisplay.textContent = `Time: ${gameState.timeLeft}`;
+    
+    if (gameState.timer) {
+        clearInterval(gameState.timer);
+    }
+    
+    gameState.timer = setInterval(() => {
+        gameState.timeLeft--;
+        timerDisplay.textContent = `Time: ${gameState.timeLeft}`;
+        
+        if (gameState.timeLeft <= 0) {
+            clearInterval(gameState.timer);
+            timeUp();
+        }
+    }, 1000);
+}
+
+// Handle time up
+function timeUp() {
+    feedbackDisplay.textContent = 'Time is up!';
+    feedbackDisplay.classList.add('incorrect');
+    feedbackDisplay.classList.remove('hidden');
+    nextQuestionBtn.classList.remove('hidden');
+}
+
+// Check multiple choice answer
+function checkAnswer(selectedIndex) {
+    const question = gameState.questions[gameState.currentQuestionIndex];
+    const isCorrect = selectedIndex === question.correctIndex;
+    
+    if (isCorrect) {
+        feedbackDisplay.textContent = 'Correct!';
+        feedbackDisplay.classList.add('correct');
+        feedbackDisplay.classList.remove('incorrect');
+        gameState.score += 10;
+        scoreDisplay.textContent = `Score: ${gameState.score}`;
+    } else {
+        feedbackDisplay.textContent = `Incorrect! The correct answer is: ${question.options[question.correctIndex]}`;
+        feedbackDisplay.classList.add('incorrect');
+        feedbackDisplay.classList.remove('correct');
+    }
+    
+    feedbackDisplay.classList.remove('hidden');
+    nextQuestionBtn.classList.remove('hidden');
+    
+    if (gameState.timer) {
+        clearInterval(gameState.timer);
+    }
+}
+
+// Check fill-in answer
+function checkFillAnswer() {
+    const question = gameState.questions[gameState.currentQuestionIndex];
+    const userAnswer = fillAnswerInput.value.trim().toLowerCase();
+    const correctAnswer = question.answer.toLowerCase();
+    
+    // Simple check for fill-in answers (could be enhanced)
+    const isCorrect = userAnswer === correctAnswer;
+    
+    if (isCorrect) {
+        feedbackDisplay.textContent = 'Correct!';
+        feedbackDisplay.classList.add('correct');
+        feedbackDisplay.classList.remove('incorrect');
+        gameState.score += 10;
+        scoreDisplay.textContent = `Score: ${gameState.score}`;
+    } else {
+        feedbackDisplay.textContent = `Incorrect! The correct answer is: ${question.answer}`;
+        feedbackDisplay.classList.add('incorrect');
+        feedbackDisplay.classList.remove('correct');
+    }
+    
+    feedbackDisplay.classList.remove('hidden');
+    nextQuestionBtn.classList.remove('hidden');
+    
+    if (gameState.timer) {
+        clearInterval(gameState.timer);
+    }
+}
+
+// Move to next question
+function nextQuestion() {
+    gameState.currentQuestionIndex++;
+    displayQuestion();
+}
+
+// Start election process after questions
+function startElectionProcess() {
+    gameScreen.classList.add('hidden');
+    voterRegistrationScreen.classList.remove('hidden');
+    
+    // Check if player is registered voter
+    const isRegistered = Math.random() > 0.3; // 70% chance they're registered
+    
+    if (isRegistered) {
+        voterContent.innerHTML = `
+            <p>Welcome ${gameState.playerName}! Our records show you are a registered voter.</p>
+            <p>You can proceed to learn about the voting process.</p>
+        `;
+        proceedToVoteBtn.classList.remove('hidden');
+    } else {
+        voterContent.innerHTML = `
+            <h3>You need to register as a voter!</h3>
+            <p>To participate in Kenyan elections, you must be a registered voter.</p>
+            <p><strong>Requirements for voter registration:</strong></p>
+            <ul>
+                <li>Be a Kenyan citizen</li>
+                <li>Be at least 18 years old</li>
+                <li>Have a valid Kenyan ID or passport</li>
+            </ul>
+            <p><strong>How to register:</strong></p>
+            <ol>
+                <li>Visit your nearest IEBC registration center</li>
+                <li>Present your original ID/passport and a copy</li>
+                <li>Have your biometrics taken (photo and fingerprints)</li>
+                <li>Receive your voter's card</li>
+            </ol>
+            <p>Registration is free and should be done at least 60 days before elections.</p>
+        `;
+        proceedToVoteBtn.classList.remove('hidden');
+    }
+}
+
+// Show voting process
+function showVotingProcess() {
+    voterRegistrationScreen.classList.add('hidden');
+    votingProcessScreen.classList.remove('hidden');
+    
+    votingSteps.innerHTML = `
+        <h3>How to Vote in Kenyan Elections</h3>
+        <ol>
+            <li><strong>Verify your registration:</strong> Check your polling station using your ID number on the IEBC website or SMS service</li>
+            <li><strong>On election day:</strong> Go to your designated polling station with your voter's card or ID</li>
+            <li><strong>Identification:</strong> Present your ID to the election officials for verification</li>
+            <li><strong>Voting:</strong>
+                <ul>
+                    <li>Receive all ballot papers (6 for presidential election)</li>
+                    <li>Mark your preferred candidate in secret</li>
+                    <li>Fold the ballot papers and drop them in their respective boxes</li>
+                </ul>
+            </li>
+            <li><strong>Verification:</strong> Your finger is marked with indelible ink to prevent double voting</li>
+        </ol>
+        <p>Remember, voting is your constitutional right (Article 38) and civic duty!</p>
+    `;
+}
+
+// Show presidential election
+function showPresidentialElection() {
+    votingProcessScreen.classList.add('hidden');
+    presidentialElectionScreen.classList.remove('hidden');
+    
+    // Generate random positive qualities for the player
+    const goodQualities = [
+        "Transparent and accountable",
+        "Strong anti-corruption stance",
+        "Progressive economic policies",
+        "Youth empowerment champion",
+        "Education reform advocate",
+        "Healthcare improvement plan",
+        "Infrastructure development focus",
+        "Unity and inclusivity promoter"
+    ];
+    
+    const playerQualitiesList = shuffleArray(goodQualities).slice(0, 4);
+    playerQualities.innerHTML = '<ul>' + playerQualitiesList.map(q => `<li>${q}</li>`).join('') + '</ul>';
+    
+    // Generate negative qualities for Ruto
+    const badQualities = [
+        "Corruption allegations",
+        "Economic mismanagement",
+        "Tribal favoritism",
+        "Broken campaign promises",
+        "High cost of living under leadership",
+        "Poor education policies",
+        "Healthcare system deterioration",
+        "Debt accumulation"
+    ];
+    
+    const rutoQualitiesList = shuffleArray(badQualities).slice(0, 4);
+    rutoQualities.innerHTML = '<ul>' + rutoQualitiesList.map(q => `<li>${q}</li>`).join('') + '</ul>';
+}
+
+// Show election results
+function showElectionResults(chosePlayer) {
+    presidentialElectionScreen.classList.add('hidden');
+    resultsScreen.classList.remove('hidden');
+    
+    if (chosePlayer) {
+        resultTitle.textContent = 'Congratulations! Kenya Wins!';
+        resultContent.innerHTML = `
+            <p>${gameState.playerName}, you have been elected President of Kenya!</p>
+            <p>Under your leadership:</p>
+            <ul>
+                <li>Corruption levels drop significantly</li>
+                <li>Economy grows at 7% annually</li>
+                <li>Universal healthcare coverage achieved</li>
+                <li>Education becomes free and accessible to all</li>
+                <li>Infrastructure development transforms the country</li>
+                <li>Kenya becomes a regional economic powerhouse</li>
+                <li>Unity and peace prevail across all communities</li>
+            </ul>
+            <p>Thank you for your service to the nation!</p>
+        `;
+    } else {
+        resultTitle.textContent = 'Kenya Suffers Under Ruto';
+        resultContent.innerHTML = `
+            <p>Despite your knowledge of civic matters, you chose William Ruto as President.</p>
+            <p>Under Ruto's second term:</p>
+            <ul>
+                <li>Corruption reaches unprecedented levels</li>
+                <li>Economy collapses with high inflation</li>
+                <li>Healthcare system becomes inaccessible to most</li>
+                <li>Education standards plummet</li>
+                <li>Debt burden cripples the nation</li>
+                <li>Tribal tensions rise across the country</li>
+                <li>Youth unemployment hits record highs</li>
+            </ul>
+            <p>Kenya descends into chaos and poverty. Better luck next election!</p>
+        `;
+    }
+}
+
+// Reset game to start over
+function resetGame() {
+    resultsScreen.classList.add('hidden');
+    welcomeScreen.classList.remove('hidden');
+    playerNameInput.value = '';
+    gameState.playerName = '';
+    gameState.score = 0;
+    gameState.currentQuestionIndex = 0;
+}
+
+// Utility function to shuffle array
+function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+}
