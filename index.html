@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ikulu Run - Kenyan Civic Education Game</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="game-container">
@@ -21,6 +21,8 @@
         </div>
 
         <div id="level-select" class="screen hidden">
+            <button class="back-btn btn">Back</button>
+            <div class="score-display">Score: 0</div>
             <h2>Choose Difficulty Level</h2>
             <div class="button-group">
                 <button id="easy-level" class="btn level-btn">Easy</button>
@@ -30,13 +32,14 @@
         </div>
 
         <div id="game-screen" class="screen hidden">
+            <button class="back-btn btn">Back</button>
+            <div class="score-display">Score: 0</div>
             <div class="game-header">
                 <div class="player-info">
                     <span id="display-name"></span>
-                    <span id="score">Score: 0</span>
+                    <span id="current-level"></span>
                 </div>
                 <div class="timer" id="timer">Time: 0</div>
-                <div class="level-display" id="current-level"></div>
             </div>
             <div class="question-container">
                 <div id="question-text" class="question-text"></div>
@@ -52,18 +55,24 @@
         </div>
 
         <div id="voter-registration" class="screen hidden">
+            <button class="back-btn btn">Back</button>
+            <div class="score-display">Score: 0</div>
             <h2>Voter Registration Process</h2>
             <div id="voter-content" class="voter-content"></div>
-            <button id="proceed-to-vote" class="btn hidden">Proceed to Voting</button>
+            <button id="proceed-to-vote" class="btn">Proceed to Voting</button>
         </div>
 
         <div id="voting-process" class="screen hidden">
+            <button class="back-btn btn">Back</button>
+            <div class="score-display">Score: 0</div>
             <h2>Voting Process in Kenya</h2>
             <div id="voting-steps" class="voting-steps"></div>
             <button id="proceed-to-election" class="btn">Proceed to Presidential Election</button>
         </div>
 
         <div id="presidential-election" class="screen hidden">
+            <button class="back-btn btn">Back</button>
+            <div class="score-display">Score: 0</div>
             <h2>Presidential Election 2027</h2>
             <div class="candidates">
                 <div class="candidate">
@@ -85,6 +94,7 @@
         </div>
 
         <div id="results-screen" class="screen hidden">
+            <div class="score-display">Final Score: 0</div>
             <h2 id="result-title">Election Results</h2>
             <div id="result-content" class="result-content"></div>
             <button id="play-again" class="btn">Play Again</button>
