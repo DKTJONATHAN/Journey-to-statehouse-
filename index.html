@@ -3,105 +3,1053 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ikulu Run - Kenyan Civic Education Game</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Ikulu Run - Kenyan Constitution & History Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .game-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .kenya-flag {
+            width: 60px;
+            height: 40px;
+            margin: 0 auto 15px;
+            position: relative;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .flag-stripe {
+            height: 25%;
+            width: 100%;
+        }
+
+        .flag-black { background: #000; }
+        .flag-red { background: #CE1126; }
+        .flag-white { background: #fff; }
+        .flag-green { background: #006A4E; }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .game-screen {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .level-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .question-container {
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .option.correct {
+            background: rgba(76, 175, 80, 0.7);
+            border-color: #4CAF50;
+        }
+
+        .option.incorrect {
+            background: rgba(244, 67, 54, 0.7);
+            border-color: #F44336;
+        }
+
+        .input-answer {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-align: center;
+        }
+
+        .input-answer::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #FF6B6B, #FF8E8E);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #FF5252, #FF7979);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #4CAF50, #66BB6A);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(45deg, #45a049, #5cb85c);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-level {
+            background: linear-gradient(45deg, #2196F3, #21CBF3);
+            color: white;
+            margin: 10px;
+            width: 200px;
+        }
+
+        .btn-level:hover {
+            background: linear-gradient(45deg, #1976D2, #03A9F4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            animation: pulse 0.5s ease-in;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .feedback.correct {
+            background: rgba(76, 175, 80, 0.3);
+            border: 2px solid #4CAF50;
+            color: #4CAF50;
+        }
+
+        .feedback.incorrect {
+            background: rgba(244, 67, 54, 0.3);
+            border: 2px solid #F44336;
+            color: #F44336;
+        }
+
+        .start-screen {
+            text-align: center;
+        }
+
+        .start-screen h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+
+        .start-screen p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .level-select-screen {
+            text-align: center;
+        }
+
+        .level-select-screen h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+
+        .ballot-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+
+        .candidate {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        .candidate:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #FFD700;
+            transform: translateY(-5px);
+        }
+
+        .candidate.good-leader {
+            border-color: #4CAF50;
+        }
+
+        .candidate.villain {
+            border-color: #F44336;
+        }
+
+        .candidate h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .candidate p {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .obstacle-warning {
+            background: rgba(255, 193, 7, 0.3);
+            border: 2px solid #FFC107;
+            color: #FFC107;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .victory-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .victory-screen h2 {
+            font-size: 3em;
+            color: #FFD700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .victory-screen p {
+            font-size: 1.3em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .statehouse-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
 </head>
 <body>
     <div class="game-container">
-        <div id="welcome-screen" class="screen">
-            <h1>Ikulu Run</h1>
-            <p>Test your knowledge of the Kenyan Constitution, elections, and civic matters!</p>
-            <div class="input-group">
-                <label for="player-name">Enter your name:</label>
-                <input type="text" id="player-name" placeholder="Your name">
+        <div class="header">
+            <div class="kenya-flag">
+                <div class="flag-stripe flag-black"></div>
+                <div class="flag-stripe flag-red"></div>
+                <div class="flag-stripe flag-white"></div>
+                <div class="flag-stripe flag-green"></div>
             </div>
-            <div class="button-group">
-                <button id="start-game" class="btn">Start Game</button>
-            </div>
+            <h1 class="title">Ikulu Run</h1>
+            <p class="subtitle">A Kenyan Constitution & History Challenge</p>
         </div>
 
-        <div id="level-select" class="screen hidden">
-            <button class="back-btn btn">Back</button>
-            <div class="score-display">Score: 0</div>
-            <h2>Choose Difficulty Level</h2>
-            <div class="button-group">
-                <button id="easy-level" class="btn level-btn">Easy</button>
-                <button id="medium-level" class="btn level-btn">Medium</button>
-                <button id="hard-level" class="btn level-btn">Hard</button>
+        <div class="game-screen">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width: 0%"></div>
             </div>
-        </div>
+            
+            <div class="level-indicator">
+                <span id="levelText">Welcome, Future Leader!</span>
+            </div>
 
-        <div id="game-screen" class="screen hidden">
-            <button class="back-btn btn">Back</button>
-            <div class="score-display">Score: 0</div>
-            <div class="game-header">
-                <div class="player-info">
-                    <span id="display-name"></span>
-                    <span id="current-level"></span>
+            <!-- Start Screen -->
+            <div id="startScreen" class="start-screen">
+                <h2>🏛️ Welcome to Ikulu Run! 🏛️</h2>
+                <p>You are a presidential candidate racing to State House (Ikulu). Answer questions correctly about Kenyan history and constitution to avoid obstacles and reach your goal!</p>
+                <p>Test your knowledge on:</p>
+                <ul style="text-align: left; margin: 20px 0; padding-left: 40px;">
+                    <li>📜 The Kenyan Constitution</li>
+                    <li>🏛️ Kenyan Political History</li>
+                    <li>🗳️ Electoral Process</li>
+                    <li>⚖️ Rights and Freedoms</li>
+                </ul>
+                <p>Get too many wrong, and you'll stumble before reaching State House!</p>
+                <button class="btn btn-primary" onclick="showLevelSelect()">Begin Your Race</button>
+            </div>
+
+            <!-- Level Select Screen -->
+            <div id="levelSelectScreen" class="level-select-screen hidden">
+                <h2>Select Difficulty Level</h2>
+                <p>Choose your challenge level. Each level has 15 questions.</p>
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <button class="btn btn-level" onclick="startGame('easy')">Easy Level</button>
+                    <button class="btn btn-level" onclick="startGame('medium')">Medium Level</button>
+                    <button class="btn btn-level" onclick="startGame('hard')">Hard Level</button>
                 </div>
-                <div class="timer" id="timer">Time: 0</div>
+                <button class="btn btn-primary" style="margin-top: 30px;" onclick="backToStart()">Back</button>
             </div>
-            <div class="question-container">
-                <div id="question-text" class="question-text"></div>
-                <div id="options-container" class="options-container"></div>
-                <div id="fill-answer-container" class="fill-answer-container hidden">
-                    <input type="text" id="fill-answer" placeholder="Type your answer here">
-                    <button id="submit-fill-answer" class="btn">Submit</button>
+
+            <!-- Question Screen -->
+            <div id="questionScreen" class="hidden">
+                <div class="obstacle-warning" id="obstacleWarning"></div>
+                <div class="question-container">
+                    <div class="question" id="questionText"></div>
+                    <div class="options" id="optionsContainer"></div>
+                    <input type="text" class="input-answer hidden" id="inputAnswer" placeholder="Type your answer here...">
+                    <button class="btn btn-success hidden" id="submitAnswer" onclick="checkAnswer()">Submit Answer</button>
                 </div>
-                <button id="next-question" class="btn hidden">Next Question</button>
+                <div class="feedback hidden" id="feedback"></div>
+                <button class="btn btn-primary hidden" id="nextButton" onclick="nextQuestion()">Continue Race</button>
             </div>
-            <div id="feedback" class="feedback hidden"></div>
-            <div id="fun-fact" class="fun-fact hidden"></div>
-        </div>
 
-        <div id="voter-registration" class="screen hidden">
-            <button class="back-btn btn">Back</button>
-            <div class="score-display">Score: 0</div>
-            <h2>Voter Registration Process</h2>
-            <div id="voter-content" class="voter-content"></div>
-            <button id="proceed-to-vote" class="btn">Proceed to Voting</button>
-        </div>
-
-        <div id="voting-process" class="screen hidden">
-            <button class="back-btn btn">Back</button>
-            <div class="score-display">Score: 0</div>
-            <h2>Voting Process in Kenya</h2>
-            <div id="voting-steps" class="voting-steps"></div>
-            <button id="proceed-to-election" class="btn">Proceed to Presidential Election</button>
-        </div>
-
-        <div id="presidential-election" class="screen hidden">
-            <button class="back-btn btn">Back</button>
-            <div class="score-display">Score: 0</div>
-            <h2>Presidential Election 2027</h2>
-            <div class="candidates">
-                <div class="candidate">
-                    <h3>You</h3>
-                    <div id="player-qualities"></div>
-                </div>
-                <div class="candidate villain">
-                    <h3>William Ruto</h3>
-                    <div id="ruto-qualities"></div>
+            <!-- Final Voting Screen -->
+            <div id="votingScreen" class="hidden">
+                <h2 style="text-align: center; color: #FFD700; margin-bottom: 30px;">🏛️ You've Reached State House! 🏛️</h2>
+                <p style="text-align: center; font-size: 1.2em; margin-bottom: 30px;">Congratulations! You've proven your knowledge of Kenya's constitution and history. Now, make your final decision:</p>
+                
+                <div class="ballot-container">
+                    <div class="candidate good-leader" onclick="vote('good')">
+                        <h3>👑 David Maraga</h3>
+                        <p><strong>Upholds Constitutional Values</strong></p>
+                        <p>✓ Respects judicial independence</p>
+                        <p>✓ Promotes rule of law</p>
+                        <p>✓ Protects human rights</p>
+                        <p>✓ Ensures free and fair elections</p>
+                        <p>✓ Fights corruption</p>
+                    </div>
+                    
+                    <div class="candidate villain" onclick="vote('villain')">
+                        <h3>👨‍💼 William Ruto</h3>
+                        <p><strong>Undermines Democracy</strong></p>
+                        <p>⚠️ Disregards court orders</p>
+                        <p>⚠️ Weakens institutions</p>
+                        <p>⚠️ Violates human rights</p>
+                        <p>⚠️ Centralizes power</p>
+                        <p>⚠️ Engages in corruption</p>
+                    </div>
                 </div>
             </div>
-            <div class="election-question">
-                <p>Who should be the next President of Kenya?</p>
-                <div class="button-group">
-                    <button id="choose-player" class="btn">Choose Me</button>
-                    <button id="choose-ruto" class="btn">Choose Ruto</button>
-                </div>
-            </div>
-        </div>
 
-        <div id="results-screen" class="screen hidden">
-            <div class="score-display">Final Score: 0</div>
-            <h2 id="result-title">Election Results</h2>
-            <div id="result-content" class="result-content"></div>
-            <button id="play-again" class="btn">Play Again</button>
+            <!-- Victory Screen -->
+            <div id="victoryScreen" class="hidden victory-screen">
+                <div class="statehouse-icon">🏛️</div>
+                <h2>Democracy Prevails!</h2>
+                <p id="victoryMessage"></p>
+                <button class="btn btn-success" onclick="restartGame()">Play Again</button>
+            </div>
         </div>
     </div>
 
-    <script src="constitution.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // Game state
+        let gameState = {
+            currentQuestion: 0,
+            score: 0,
+            currentLevel: '',
+            gameStarted: false,
+            questions: []
+        };
+
+        // Questions for each level
+        const questionsByLevel = {
+            easy: [
+                {
+                    type: "multiple",
+                    obstacle: "Term Limit Challenge",
+                    question: "According to the Kenyan Constitution, what is the maximum number of terms a President can serve?",
+                    options: ["1 term", "2 terms", "3 terms", "No term limits"],
+                    correct: 1,
+                    explanation: "Article 142 of the Constitution limits the President to a maximum of 2 terms of 5 years each."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Founding Fathers Test",
+                    question: "Who was Kenya's first President after independence in 1963?",
+                    answer: "Jomo Kenyatta",
+                    explanation: "Jomo Kenyatta served as Kenya's first President from 1963 to 1978."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Electoral Process",
+                    question: "What is the minimum voting age in Kenya?",
+                    options: ["16 years", "18 years", "21 years", "25 years"],
+                    correct: 1,
+                    explanation: "The Constitution sets the voting age at 18 years."
+                },
+                {
+                    type: "fill",
+                    obstacle: "National Symbols",
+                    question: "What is Kenya's national animal?",
+                    answer: "Lion",
+                    explanation: "The lion is Kenya's national animal, representing bravery."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Government Structure",
+                    question: "How many arms of government does Kenya have?",
+                    options: ["2", "3", "4", "5"],
+                    correct: 1,
+                    explanation: "Kenya has 3 arms: Executive, Legislature, and Judiciary."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Electoral Body",
+                    question: "What does IEBC stand for?",
+                    answer: "Independent Electoral and Boundaries Commission",
+                    explanation: "IEBC manages elections and boundaries in Kenya."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Rights Challenge",
+                    question: "Which of these is a right in the Kenyan Constitution?",
+                    options: ["Right to life", "Right to free car", "Right to free house", "Right to be president"],
+                    correct: 0,
+                    explanation: "Right to life is protected under Article 26."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Historical Event",
+                    question: "In what year did Kenya become a republic?",
+                    answer: "1964",
+                    explanation: "Kenya became a republic on 12 December 1964."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Voting Process",
+                    question: "What do you need to vote in Kenya?",
+                    options: ["National ID", "Passport", "Driver's license", "Birth certificate"],
+                    correct: 0,
+                    explanation: "A national ID or passport is required for voting."
+                },
+                {
+                    type: "fill",
+                    obstacle: "National Anthem",
+                    question: "What is the title of Kenya's national anthem in English?",
+                    answer: "Ee Mungu Nguvu Yetu",
+                    explanation: "It translates to 'O God of All Creation'."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Electoral Day",
+                    question: "When are general elections held in Kenya?",
+                    options: ["First Tuesday in August", "Second Tuesday in August", "First Monday in December", "Second Monday in December"],
+                    correct: 1,
+                    explanation: "Elections are held on the second Tuesday in August every 5 years."
+                },
+                {
+                    type: "fill",
+                    obstacle: "County System",
+                    question: "How many counties does Kenya have?",
+                    answer: "47",
+                    explanation: "The 2010 Constitution created 47 counties."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Voting Rights",
+                    question: "Can prisoners vote in Kenya?",
+                    options: ["Yes", "No", "Only some prisoners", "Only if approved by president"],
+                    correct: 2,
+                    explanation: "Only prisoners not convicted of election offenses can vote."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Constitution Day",
+                    question: "When was the current constitution promulgated?",
+                    answer: "2010",
+                    explanation: "The 2010 Constitution was promulgated on August 27, 2010."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Voter Registration",
+                    question: "Where do Kenyans register to vote?",
+                    options: ["IEBC office", "Police station", "County office", "Anywhere"],
+                    correct: 0,
+                    explanation: "Voter registration is done at IEBC offices."
+                }
+            ],
+            medium: [
+                {
+                    type: "multiple",
+                    obstacle: "Term Limit Challenge",
+                    question: "Which article of the Constitution limits presidential terms?",
+                    options: ["Article 142", "Article 10", "Article 1", "Article 260"],
+                    correct: 0,
+                    explanation: "Article 142 limits the President to 2 terms."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Historical Leaders",
+                    question: "Who was Kenya's second Vice President?",
+                    answer: "Joseph Murumbi",
+                    explanation: "Murumbi served from 1966 after Odinga resigned."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Electoral Process",
+                    question: "What is NOT required to register as a voter?",
+                    options: ["Being 18+ years", "Kenyan citizenship", "Birth certificate", "National ID"],
+                    correct: 2,
+                    explanation: "Birth certificate isn't required for voter registration."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Judicial System",
+                    question: "Who is the current Chief Justice of Kenya?",
+                    answer: "Martha Koome",
+                    explanation: "Justice Koome became CJ in 2021."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Constitutional Principles",
+                    question: "Which is NOT a national value in Article 10?",
+                    options: ["Patriotism", "Democracy", "Corruption", "Rule of law"],
+                    correct: 2,
+                    explanation: "Corruption is not a national value."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Electoral Timeline",
+                    question: "How many days before election should voter registration stop?",
+                    answer: "60",
+                    explanation: "Registration stops 60 days before election."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Rights Challenge",
+                    question: "Which right can be limited during emergencies?",
+                    options: ["Freedom of movement", "Right to life", "Freedom from torture", "Freedom from slavery"],
+                    correct: 0,
+                    explanation: "Freedom of movement can be limited during emergencies."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Historical Event",
+                    question: "When was multiparty democracy reintroduced in Kenya?",
+                    answer: "1991",
+                    explanation: "Multipartyism returned in December 1991."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Voting Process",
+                    question: "What color is the presidential ballot paper?",
+                    options: ["White", "Green", "Yellow", "Gray"],
+                    correct: 3,
+                    explanation: "Presidential ballots are gray."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Legislature",
+                    question: "How many members are in the National Assembly?",
+                    answer: "349",
+                    explanation: "There are 349 members in the National Assembly."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Electoral System",
+                    question: "How are most MPs elected in Kenya?",
+                    options: ["First-past-the-post", "Proportional", "Appointed", "Lottery"],
+                    correct: 0,
+                    explanation: "MPs are elected through first-past-the-post system."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Devolution",
+                    question: "Which article establishes county governments?",
+                    answer: "176",
+                    explanation: "Article 176 establishes county governments."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Voting Rights",
+                    question: "Can Kenyans abroad vote?",
+                    options: ["Yes, for president only", "Yes, for all positions", "No", "Only in neighboring countries"],
+                    correct: 0,
+                    explanation: "Kenyans abroad can vote for president only."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Constitutional Change",
+                    question: "How many chapters are in the Kenyan Constitution?",
+                    answer: "18",
+                    explanation: "The Constitution has 18 chapters."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Voter Verification",
+                    question: "How can you verify your voter registration?",
+                    options: ["SMS to 70000", "IEBC website", "Both", "Neither"],
+                    correct: 2,
+                    explanation: "Both SMS and IEBC website can be used."
+                }
+            ],
+            hard: [
+                {
+                    type: "multiple",
+                    obstacle: "Constitutional Challenge",
+                    question: "Which article establishes the Senate?",
+                    options: ["Article 96", "Article 93", "Article 109", "Article 150"],
+                    correct: 0,
+                    explanation: "Article 96 establishes the Senate."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Historical Challenge",
+                    question: "Who was the only Vice President to become President?",
+                    answer: "Daniel arap Moi",
+                    explanation: "Moi succeeded Kenyatta in 1978."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Electoral Process",
+                    question: "What percentage is needed to win presidency in first round?",
+                    options: ["25% in 24 counties", "25% in half counties", "50%+1 and 25% in 24 counties", "Simple majority"],
+                    correct: 2,
+                    explanation: "50%+1 and 25% in 24 counties is required."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Judicial System",
+                    question: "How many judges serve on the Supreme Court?",
+                    answer: "7",
+                    explanation: "The Supreme Court has 7 judges."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Constitutional Principles",
+                    question: "Which is NOT a principle of public service?",
+                    options: ["Efficiency", "Nepotism", "Accountability", "Transparency"],
+                    correct: 1,
+                    explanation: "Nepotism is not a principle of public service."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Electoral Timeline",
+                    question: "How many days before election should presidential candidates be nominated?",
+                    answer: "60",
+                    explanation: "Presidential candidates must be nominated 60 days before election."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Rights Challenge",
+                    question: "Which right cannot be limited under any circumstances?",
+                    options: ["Freedom from torture", "Freedom of speech", "Freedom of assembly", "Freedom of movement"],
+                    correct: 0,
+                    explanation: "Freedom from torture is absolute."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Historical Event",
+                    question: "When was the first constitutional referendum held?",
+                    answer: "2005",
+                    explanation: "The first referendum was in 2005 on the Wako draft."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Voting Process",
+                    question: "What is the maximum time allowed for voting?",
+                    options: ["6am-5pm", "6am-6pm", "5am-5pm", "5am-6pm"],
+                    correct: 0,
+                    explanation: "Voting runs from 6am to 5pm."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Legislature",
+                    question: "How many nominated MPs are in the National Assembly?",
+                    answer: "12",
+                    explanation: "There are 12 nominated MPs."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Electoral System",
+                    question: "How are women representatives elected?",
+                    options: ["County-wide vote", "National list", "Party nomination", "Presidential appointment"],
+                    correct: 0,
+                    explanation: "They're elected by county-wide vote."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Devolution",
+                    question: "Which article establishes the Senate Speaker?",
+                    answer: "106",
+                    explanation: "Article 106 establishes the Senate Speaker."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Voting Rights",
+                    question: "What percentage of signatures is needed for a presidential recall?",
+                    options: ["15% of voters", "25% of voters", "50% of voters", "Cannot be recalled"],
+                    correct: 3,
+                    explanation: "The President cannot be recalled."
+                },
+                {
+                    type: "fill",
+                    obstacle: "Constitutional Change",
+                    question: "Which article establishes the Katiba Institute?",
+                    answer: "None",
+                    explanation: "Katiba Institute is an NGO, not in Constitution."
+                },
+                {
+                    type: "multiple",
+                    obstacle: "Voter Verification",
+                    question: "What information is needed for SMS voter verification?",
+                    options: ["ID number only", "ID and surname", "ID and polling station", "ID and county"],
+                    correct: 0,
+                    explanation: "Only ID number is needed for SMS verification."
+                }
+            ]
+        };
+
+        // Initialize game from localStorage
+        function initGame() {
+            const savedState = localStorage.getItem('ikuluRunGameState');
+            if (savedState) {
+                gameState = JSON.parse(savedState);
+                if (gameState.gameStarted) {
+                    showLevelSelect();
+                    startGame(gameState.currentLevel, true);
+                }
+            }
+        }
+
+        // Save game state to localStorage
+        function saveGameState() {
+            localStorage.setItem('ikuluRunGameState', JSON.stringify(gameState));
+        }
+
+        // Clear game state
+        function clearGameState() {
+            localStorage.removeItem('ikuluRunGameState');
+        }
+
+        // Show level select screen
+        function showLevelSelect() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('levelSelectScreen').classList.remove('hidden');
+        }
+
+        // Back to start screen
+        function backToStart() {
+            document.getElementById('levelSelectScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+        }
+
+        // Start game with selected level
+        function startGame(level, fromSavedState = false) {
+            gameState.currentLevel = level;
+            gameState.gameStarted = true;
+            gameState.currentQuestion = fromSavedState ? gameState.currentQuestion : 0;
+            gameState.score = fromSavedState ? gameState.score : 0;
+            gameState.questions = questionsByLevel[level];
+            
+            if (!fromSavedState) {
+                saveGameState();
+            }
+            
+            document.getElementById('levelSelectScreen').classList.add('hidden');
+            document.getElementById('questionScreen').classList.remove('hidden');
+            showQuestion();
+        }
+
+        // Show current question
+        function showQuestion() {
+            const question = gameState.questions[gameState.currentQuestion];
+            const progressPercent = ((gameState.currentQuestion + 1) / gameState.questions.length) * 100;
+            
+            document.getElementById('progressBar').style.width = progressPercent + '%';
+            document.getElementById('levelText').textContent = `${gameState.currentLevel.toUpperCase()} Level - Question ${gameState.currentQuestion + 1} of ${gameState.questions.length}`;
+            document.getElementById('obstacleWarning').textContent = `⚠️ Obstacle: ${question.obstacle}`;
+            document.getElementById('questionText').textContent = question.question;
+            
+            // Clear previous feedback
+            document.getElementById('feedback').classList.add('hidden');
+            document.getElementById('nextButton').classList.add('hidden');
+            
+            if (question.type === "multiple") {
+                showMultipleChoice(question);
+            } else {
+                showFillAnswer(question);
+            }
+            
+            saveGameState();
+        }
+
+        // Show multiple choice question
+        function showMultipleChoice(question) {
+            document.getElementById('optionsContainer').classList.remove('hidden');
+            document.getElementById('inputAnswer').classList.add('hidden');
+            document.getElementById('submitAnswer').classList.add('hidden');
+            
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectOption(index);
+                container.appendChild(optionDiv);
+            });
+        }
+
+        // Show fill-in answer question
+        function showFillAnswer(question) {
+            document.getElementById('optionsContainer').classList.add('hidden');
+            document.getElementById('inputAnswer').classList.remove('hidden');
+            document.getElementById('submitAnswer').classList.remove('hidden');
+            
+            document.getElementById('inputAnswer').value = '';
+            document.getElementById('inputAnswer').focus();
+        }
+
+        // Handle option selection
+        function selectOption(selectedIndex) {
+            const question = gameState.questions[gameState.currentQuestion];
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach((option, index) => {
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex && index !== question.correct) {
+                    option.classList.add('incorrect');
+                }
+                option.style.pointerEvents = 'none';
+            });
+            
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('hidden');
+            
+            if (selectedIndex === question.correct) {
+                feedback.textContent = `Correct! ${question.explanation}`;
+                feedback.classList.add('correct');
+                feedback.classList.remove('incorrect');
+                gameState.score++;
+            } else {
+                feedback.textContent = `Incorrect. ${question.explanation}`;
+                feedback.classList.add('incorrect');
+                feedback.classList.remove('correct');
+            }
+            
+            document.getElementById('nextButton').classList.remove('hidden');
+            saveGameState();
+        }
+
+        // Check fill-in answer
+        function checkAnswer() {
+            const question = gameState.questions[gameState.currentQuestion];
+            const userAnswer = document.getElementById('inputAnswer').value.trim();
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('hidden');
+            
+            if (userAnswer.toLowerCase() === question.answer.toLowerCase()) {
+                feedback.textContent = `Correct! ${question.explanation}`;
+                feedback.classList.add('correct');
+                feedback.classList.remove('incorrect');
+                gameState.score++;
+            } else {
+                feedback.textContent = `Incorrect. The correct answer is: ${question.answer}. ${question.explanation}`;
+                feedback.classList.add('incorrect');
+                feedback.classList.remove('correct');
+            }
+            
+            document.getElementById('nextButton').classList.remove('hidden');
+            document.getElementById('submitAnswer').classList.add('hidden');
+            saveGameState();
+        }
+
+        // Move to next question
+        function nextQuestion() {
+            gameState.currentQuestion++;
+            
+            if (gameState.currentQuestion < gameState.questions.length) {
+                showQuestion();
+            } else {
+                endGame();
+            }
+            saveGameState();
+        }
+
+        // End game and show voting screen
+        function endGame() {
+            document.getElementById('questionScreen').classList.add('hidden');
+            document.getElementById('votingScreen').classList.remove('hidden');
+            saveGameState();
+        }
+
+        // Handle voting choice
+        function vote(choice) {
+            document.getElementById('votingScreen').classList.add('hidden');
+            const victoryScreen = document.getElementById('victoryScreen');
+            const victoryMessage = document.getElementById('victoryMessage');
+            
+            victoryScreen.classList.remove('hidden');
+            
+            if (choice === 'good') {
+                victoryMessage.textContent = `You scored ${gameState.score} out of ${gameState.questions.length} and chose David Maraga! Kenya's future is bright with leaders who respect the constitution and rule of law.`;
+            } else {
+                victoryMessage.textContent = `Despite scoring ${gameState.score} out of ${gameState.questions.length}, you chose William Ruto. Kenya deserves better leadership that respects democratic values!`;
+            }
+            
+            clearGameState();
+        }
+
+        // Restart game
+        function restartGame() {
+            document.getElementById('victoryScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+            gameState = {
+                currentQuestion: 0,
+                score: 0,
+                currentLevel: '',
+                gameStarted: false,
+                questions: []
+            };
+        }
+
+        // Allow Enter key to submit answer
+        document.getElementById('inputAnswer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // Initialize game when page loads
+        window.onload = initGame;
+    </script>
 </body>
 </html>
