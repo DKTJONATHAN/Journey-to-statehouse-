@@ -1,4 +1,4 @@
-// Constitution-related questions
+// Constitution-related questions (all multiple choice)
 const constitutionQuestions = [
     {
         question: "In which year was the current Kenyan Constitution promulgated?",
@@ -15,8 +15,8 @@ const constitutionQuestions = [
     },
     {
         question: "Which article of the Constitution establishes the Judiciary?",
-        answer: "160",
-        type: "fill",
+        options: ["Article 130", "Article 150", "Article 160", "Article 170"],
+        correctIndex: 2,
         level: "hard"
     },
     {
@@ -28,8 +28,8 @@ const constitutionQuestions = [
     },
     {
         question: "What is the minimum age requirement to be elected as President of Kenya?",
-        answer: "35",
-        type: "fill",
+        options: ["30 years", "35 years", "40 years", "45 years"],
+        correctIndex: 1,
         level: "medium"
     },
     {
@@ -47,8 +47,8 @@ const constitutionQuestions = [
     },
     {
         question: "How many basic values are listed in Article 10 of the Constitution?",
-        answer: "12",
-        type: "fill",
+        options: ["8", "10", "12", "15"],
+        correctIndex: 2,
         level: "hard",
         timer: 20
     },
@@ -61,13 +61,13 @@ const constitutionQuestions = [
     },
     {
         question: "The right to privacy is protected under which Article?",
-        answer: "31",
-        type: "fill",
+        options: ["Article 25", "Article 31", "Article 37", "Article 42"],
+        correctIndex: 1,
         level: "medium"
     }
 ];
 
-// Election-related questions
+// Election-related questions (all multiple choice)
 const electionQuestions = [
     {
         question: "How often are general elections held in Kenya?",
@@ -84,33 +84,33 @@ const electionQuestions = [
     },
     {
         question: "What is the minimum voting age in Kenya?",
-        answer: "18",
-        type: "fill",
+        options: ["16 years", "18 years", "21 years", "25 years"],
+        correctIndex: 1,
         level: "easy"
     },
     {
         question: "How many days before elections should voter registration close?",
-        options: ["30", "60", "90", "120"],
+        options: ["30 days", "60 days", "90 days", "120 days"],
         correctIndex: 1,
         level: "medium"
     },
     {
         question: "Which article of the Constitution guarantees the right to free and fair elections?",
-        answer: "38",
-        type: "fill",
+        options: ["Article 35", "Article 38", "Article 42", "Article 45"],
+        correctIndex: 1,
         level: "hard"
     },
     {
         question: "What percentage is required for a presidential candidate to win in the first round?",
-        options: ["25%", "50%+1", "75%", "Simple majority"],
+        options: ["25% in 24 counties", "50%+1 nationwide", "40% nationwide and 30% in 24 counties", "Simple majority"],
         correctIndex: 1,
         level: "medium",
         timer: 15
     },
     {
         question: "How many ballot papers are used in a Kenyan presidential election?",
-        answer: "6",
-        type: "fill",
+        options: ["4", "5", "6", "7"],
+        correctIndex: 2,
         level: "hard"
     },
     {
@@ -134,7 +134,7 @@ const electionQuestions = [
     }
 ];
 
-// Finance Bill related questions
+// Finance Bill related questions (all multiple choice)
 const financeBillQuestions = [
     {
         question: "Which house of Parliament originates money bills?",
@@ -144,8 +144,8 @@ const financeBillQuestions = [
     },
     {
         question: "How many days does the President have to assent to a finance bill?",
-        answer: "14",
-        type: "fill",
+        options: ["7 days", "14 days", "21 days", "30 days"],
+        correctIndex: 1,
         level: "hard"
     },
     {
@@ -157,8 +157,8 @@ const financeBillQuestions = [
     },
     {
         question: "Which article requires public participation in financial matters?",
-        answer: "201",
-        type: "fill",
+        options: ["Article 195", "Article 201", "Article 210", "Article 215"],
+        correctIndex: 1,
         level: "hard"
     },
     {
@@ -200,3 +200,13 @@ const financeBillQuestions = [
         funFact: "Article 201 requires the tax system to be fair and equitable."
     }
 ];
+
+// Utility function to shuffle array
+function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+}
