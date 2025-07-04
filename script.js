@@ -475,6 +475,7 @@ const elements = {
   feedback: document.getElementById('feedback'),
   nextButton: document.getElementById('nextButton'),
   timerDisplay: document.getElementById('timer'),
+  constitutionalReference: document.getElementById('constitutional-reference'),
   constitutionRef: document.getElementById('constitution-ref'),
   finalScore: document.getElementById('finalScore'),
   victoryTitle: document.getElementById('victoryTitle'),
@@ -488,10 +489,16 @@ function initGame() {
   elements.nextButton.addEventListener('click', nextQuestion);
 
   // Hide all screens except start
-  Object.values(elements).forEach(el => {
-    if (el && el.classList) el.classList.add('hidden');
-  });
+  hideAllScreens();
   elements.startScreen.classList.remove('hidden');
+}
+
+function hideAllScreens() {
+  elements.startScreen.classList.add('hidden');
+  elements.questionScreen.classList.add('hidden');
+  elements.votingScreen.classList.add('hidden');
+  elements.victoryScreen.classList.add('hidden');
+  elements.voterRegistrationScreen.classList.add('hidden');
 }
 
 // Start game
@@ -505,7 +512,7 @@ function startGame() {
     attempts: 0
   };
 
-  elements.startScreen.classList.add('hidden');
+  hideAllScreens();
   elements.questionScreen.classList.remove('hidden');
   showQuestion();
 }
@@ -516,252 +523,4 @@ function showQuestion() {
   const progressPercent = ((gameState.questionIndex + 1) / levels[gameState.level].length) * 100;
 
   elements.progressBar.style.width = `${progressPercent}%`;
-  elements.levelText.textContent = `${gameState.level.toUpperCase()} Level - Question ${gameState.questionIndex + 1} of ${levels[gameState.level].length}`;
-  elements.obstacleWarning.textContent = `⚠️ Challenge: ${question.obstacle || 'Constitutional Knowledge'}`;
-  elements.questionText.textContent = question.question;
-
-  // Clear previous feedback
-  elements.feedback.classList.add('hidden');
-  elements.nextButton.classList.add('hidden');
-  elements.constitutionRef.textContent = question.reference || '';
-  
-  if (question.reference) {
-    elements.constitutionalReference.classList.remove('hidden');
-  } else {
-    elements.constitutionalReference.classList.add('hidden');
-  }
-
-  if (question.type === "multiple") {
-    showMultipleChoice(question);
-  } else {
-    showFillAnswer(question);
-  }
-
-  // Start timer if question has one
-  if (question.timer) {
-    startTimer(question.timer);
-  }
-}
-
-// Show multiple choice question
-function showMultipleChoice(question) {
-  elements.optionsContainer.classList.remove('hidden');
-  elements.inputAnswer.classList.add('hidden');
-  elements.submitAnswer.classList.add('hidden');
-
-  elements.optionsContainer.innerHTML = '';
-
-  question.options.forEach((option, index) => {
-    const optionDiv = document.createElement('div');
-    optionDiv.className = 'option';
-    optionDiv.textContent = option;
-    optionDiv.onclick = () => selectOption(index);
-    elements.optionsContainer.appendChild(optionDiv);
-  });
-}
-
-// Show fill-in answer question
-function showFillAnswer(question) {
-  elements.optionsContainer.classList.add('hidden');
-  elements.inputAnswer.classList.remove('hidden');
-  elements.submitAnswer.classList.remove('hidden');
-
-  elements.inputAnswer.value = '';
-  elements.inputAnswer.focus();
-}
-
-// Select option for multiple choice
-function selectOption(selectedIndex) {
-  const options = document.querySelectorAll('.option');
-  options.forEach(option => option.classList.remove('selected'));
-  options[selectedIndex].classList.add('selected');
-}
-
-// Check answer
-function checkAnswer() {
-  const question = levels[gameState.level][gameState.questionIndex];
-  let isCorrect = false;
-  let userAnswer;
-
-  if (question.type === 'multiple') {
-    const selectedOption = document.querySelector('.option.selected');
-    if (!selectedOption) {
-      showFeedback("Please select an answer!");
-      return;
-    }
-    const selectedIndex = Array.from(document.querySelectorAll('.option')).indexOf(selectedOption);
-    isCorrect = (selectedIndex === question.correct);
-    userAnswer = selectedIndex;
-  } else {
-    userAnswer = elements.inputAnswer.value.trim();
-    isCorrect = (userAnswer.toLowerCase() === question.answer.toLowerCase());
-  }
-
-  if (isCorrect) {
-    handleCorrectAnswer(question);
-  } else {
-    handleIncorrectAnswer(question);
-  }
-}
-
-function handleCorrectAnswer(question) {
-  clearInterval(timer.interval);
-  gameState.score++;
-  gameState.attempts = 0;
-  
-  // Show correct feedback
-  showFeedback(`Correct! ${question.explanation}`, true);
-  
-  // Highlight correct answer for multiple choice
-  if (question.type === 'multiple') {
-    const options = document.querySelectorAll('.option');
-    options[question.correct].classList.add('correct');
-  }
-  
-  elements.nextButton.classList.remove('hidden');
-  elements.constitutionalReference.classList.remove('hidden');
-}
-
-function handleIncorrectAnswer(question) {
-  gameState.attempts++;
-  
-  if (gameState.attempts >= 3) {
-    clearInterval(timer.interval);
-    showFeedback(`Maximum attempts reached. Correct answer: ${question.type === 'multiple' ? question.options[question.correct] : question.answer}`);
-    
-    // Highlight correct answer
-    if (question.type === 'multiple') {
-      const options = document.querySelectorAll('.option');
-      options[question.correct].classList.add('correct');
-    }
-    
-    elements.nextButton.classList.remove('hidden');
-    elements.constitutionalReference.classList.remove('hidden');
-  } else {
-    showFeedback("Incorrect. Try again!");
-  }
-}
-
-// Show feedback message
-function showFeedback(message, isCorrect = false) {
-  elements.feedback.textContent = message;
-  elements.feedback.className = 'feedback';
-  elements.feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
-  elements.feedback.classList.remove('hidden');
-}
-
-// Move to next question or level
-function nextQuestion() {
-  gameState.questionIndex++;
-  
-  if (gameState.questionIndex >= levels[gameState.level].length) {
-    // Level completed
-    gameState.completedLevels.push(gameState.level);
-    
-    if (gameState.level === 'easy') {
-      gameState.level = 'medium';
-    } else if (gameState.level === 'medium') {
-      gameState.level = 'hard';
-    } else {
-      showVoterRegistration();
-      return;
-    }
-    
-    gameState.questionIndex = 0;
-  }
-  
-  // Reset for next question
-  gameState.attempts = 0;
-  clearInterval(timer.interval);
-  elements.timerDisplay.classList.add('hidden');
-  showQuestion();
-}
-
-// Start timer
-function startTimer(seconds) {
-  clearInterval(timer.interval);
-  timer.timeLeft = seconds;
-  elements.timerDisplay.textContent = timer.timeLeft;
-  elements.timerDisplay.classList.remove('hidden');
-  
-  timer.interval = setInterval(() => {
-    timer.timeLeft--;
-    elements.timerDisplay.textContent = timer.timeLeft;
-    
-    if (timer.timeLeft <= 0) {
-      timeUp();
-    }
-  }, 1000);
-}
-
-// Handle time up
-function timeUp() {
-  clearInterval(timer.interval);
-  const question = levels[gameState.level][gameState.questionIndex];
-  showFeedback(`Time's up! The correct answer was: ${question.type === 'multiple' ? question.options[question.correct] : question.answer}`);
-  
-  // Highlight correct answer for multiple choice
-  if (question.type === 'multiple') {
-    const options = document.querySelectorAll('.option');
-    options[question.correct].classList.add('correct');
-  }
-  
-  elements.nextButton.classList.remove('hidden');
-  elements.constitutionalReference.classList.remove('hidden');
-}
-
-// Show voter registration screen
-function showVoterRegistration() {
-  elements.questionScreen.classList.add('hidden');
-  elements.voterRegistrationScreen.classList.remove('hidden');
-  elements.finalScore.textContent = gameState.score;
-}
-
-// Check registration status
-function checkRegistration(isRegistered) {
-  gameState.registeredVoter = isRegistered;
-  
-  if (isRegistered) {
-    showVotingScreen();
-  } else {
-    elements.registrationInfo.classList.remove('hidden');
-    elements.proceedToVote.classList.remove('hidden');
-  }
-}
-
-// Proceed to vote after registration info
-function proceedToVote() {
-  elements.voterRegistrationScreen.classList.add('hidden');
-  elements.votingScreen.classList.remove('hidden');
-}
-
-// Show voting screen
-function showVotingScreen() {
-  elements.voterRegistrationScreen.classList.add('hidden');
-  elements.votingScreen.classList.remove('hidden');
-}
-
-// Handle voting choice
-function vote(choice) {
-  elements.votingScreen.classList.add('hidden');
-  const totalQuestions = Object.values(levels).reduce((sum, level) => sum + level.length, 0);
-  
-  elements.victoryMessage.innerHTML = `
-    <p>You scored ${gameState.score} out of ${totalQuestions}!</p>
-    ${choice === 'good' ? 
-      "🇰🇪 Your choice shows commitment to good governance! Kenya needs informed citizens like you." : 
-      "⚠️ Your choice maintains the status quo. Stay engaged with civic processes to see change."}
-    <p>Remember to participate in actual elections and hold leaders accountable.</p>
-  `;
-  
-  elements.victoryScreen.classList.remove('hidden');
-}
-
-// Restart game
-function restartGame() {
-  elements.victoryScreen.classList.add('hidden');
-  elements.startScreen.classList.remove('hidden');
-}
-
-// Initialize game when loaded
-document.addEventListener('DOMContentLoaded', initGame);
+  elements.levelText.textContent = `${gameState.level.toUpperCas
