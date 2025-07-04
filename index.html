@@ -54,7 +54,39 @@
                 <div class="feedback hidden" id="feedback"></div>
                 <button class="btn btn-primary hidden" id="nextButton" onclick="nextQuestion()">Continue Journey</button>
             </div>
+<!-- Voter Registration Check -->
+<div id="voterRegistrationScreen" class="hidden">
+  <h2>🗳️ Voter Registration Check</h2>
+  <p>You've completed all civic knowledge challenges with ${score} correct answers!</p>
+  <p>Now, let's ensure you're ready for real elections:</p>
+  
+  <div class="options">
+    <div class="option" onclick="checkRegistration(true)">
+      <h3>✅ I am registered to vote</h3>
+      <p>My details appear in the IEBC register</p>
+    </div>
+    <div class="option" onclick="checkRegistration(false)">
+      <h3>❌ I am not registered</h3>
+      <p>I need information on how to register</p>
+    </div>
+  </div>
 
+  <div id="registrationInfo" class="hidden" style="margin-top: 30px;">
+    <h3>How to Register as a Voter:</h3>
+    <ol style="text-align: left; margin: 20px;">
+      <li>Visit your <strong>nearest IEBC registration center</strong> (find at www.iebc.or.ke)</li>
+      <li>Bring your <strong>original ID card/passport</strong> and a copy</li>
+      <li>Fill the <strong>registration form</strong> with your details</li>
+      <li>Have your <strong>biometrics (fingerprints)</strong> taken</li>
+      <li>Receive your <strong>voter's slip</strong> with details</li>
+    </ol>
+    <p><em>Registration is free and takes about 15 minutes!</em></p>
+  </div>
+
+  <button id="proceedToVote" class="btn btn-primary hidden" onclick="endVoterEducation()">
+    Proceed to Voting Simulation
+  </button>
+</div>
             <!-- Final Voting Screen -->
             <div id="votingScreen" class="hidden">
                 <h2 style="text-align: center; color: #FFD700; margin-bottom: 30px;">🏛️ You've Reached State House! 🏛️</h2>
