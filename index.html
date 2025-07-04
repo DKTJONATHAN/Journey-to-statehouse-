@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Journey to State House - Kenya Civic Education Game</title>
+    <title>Journey 2 Ikulu - Kenya Civic Education Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,8 +15,8 @@
                 <div class="flag-stripe flag-white"></div>
                 <div class="flag-stripe flag-green"></div>
             </div>
-            <h1 class="title">Journey to State House</h1>
-            <p class="subtitle">A Kenyan Civic Education Adventure</p>
+            <h1 class="title">Journey 2 Ikulu</h1>
+            <p class="subtitle">The Road to State House</p>
         </div>
 
         <div class="game-screen">
@@ -26,20 +26,21 @@
             
             <div class="level-indicator">
                 <span id="levelText">Welcome, Future Leader!</span>
+                <span id="timer" class="hidden">30</span>
             </div>
 
             <!-- Start Screen -->
             <div id="startScreen" class="start-screen">
-                <h2>🏛️ Welcome to the Journey to State House! �</h2>
-                <p>You are a dedicated citizen of Kenya with a dream to serve your country. Your journey to State House is filled with challenges that will test your knowledge of:</p>
-                <ul style="text-align: left; margin: 20px 0; padding-left: 40px;">
-                    <li>📜 The Kenyan Constitution</li>
-                    <li>🏛️ Kenyan History</li>
-                    <li>🗳️ Voting and Democracy</li>
-                    <li>⚖️ Rule of Law and Human Rights</li>
+                <h2>🏛️ Welcome to Journey 2 Ikulu! 🏛️</h2>
+                <p>You are a presidential candidate in Kenya's 2027 elections. Your journey to State House requires:</p>
+                <ul class="features-list">
+                    <li>📜 Mastering constitutional requirements</li>
+                    <li>🏛️ Understanding governance structures</li>
+                    <li>🗳️ Navigating electoral processes</li>
+                    <li>⚖️ Demonstrating leadership integrity</li>
                 </ul>
-                <p>Along the way, you'll face obstacles set by those who oppose good governance. Only by demonstrating your civic knowledge can you overcome these challenges and reach the State House to make your choice for Kenya's future!</p>
-                <button class="btn btn-primary" onclick="startGame()">Begin Your Journey</button>
+                <p>Overcome campaign challenges by proving your civic knowledge at each stage of the journey!</p>
+                <button class="btn btn-primary" id="startButton">Begin Your Campaign</button>
             </div>
 
             <!-- Question Screen -->
@@ -49,83 +50,76 @@
                     <div class="question" id="questionText"></div>
                     <div class="options" id="optionsContainer"></div>
                     <input type="text" class="input-answer hidden" id="inputAnswer" placeholder="Type your answer here...">
-                    <button class="btn btn-success hidden" id="submitAnswer" onclick="checkAnswer()">Submit Answer</button>
+                    <button class="btn btn-success hidden" id="submitAnswer">Submit Answer</button>
                 </div>
                 <div class="feedback hidden" id="feedback"></div>
-                <button class="btn btn-primary hidden" id="nextButton" onclick="nextQuestion()">Continue Journey</button>
+                <button class="btn btn-primary hidden" id="nextButton">Continue Campaign</button>
+                
+                <!-- Constitutional Reference -->
+                <div id="constitutional-reference" class="hidden">
+                    <h4>📜 Constitutional Reference</h4>
+                    <div id="constitution-ref"></div>
+                </div>
             </div>
-<!-- Voter Registration Check -->
-<div id="voterRegistrationScreen" class="hidden">
-  <h2>🗳️ Voter Registration Check</h2>
-  <p>You've completed all civic knowledge challenges with ${score} correct answers!</p>
-  <p>Now, let's ensure you're ready for real elections:</p>
-  
-  <div class="options">
-    <div class="option" onclick="checkRegistration(true)">
-      <h3>✅ I am registered to vote</h3>
-      <p>My details appear in the IEBC register</p>
-    </div>
-    <div class="option" onclick="checkRegistration(false)">
-      <h3>❌ I am not registered</h3>
-      <p>I need information on how to register</p>
-    </div>
-  </div>
 
-  <div id="registrationInfo" class="hidden" style="margin-top: 30px;">
-    <h3>How to Register as a Voter:</h3>
-    <ol style="text-align: left; margin: 20px;">
-      <li>Visit your <strong>nearest IEBC registration center</strong> (find at www.iebc.or.ke)</li>
-      <li>Bring your <strong>original ID card/passport</strong> and a copy</li>
-      <li>Fill the <strong>registration form</strong> with your details</li>
-      <li>Have your <strong>biometrics (fingerprints)</strong> taken</li>
-      <li>Receive your <strong>voter's slip</strong> with details</li>
-    </ol>
-    <p><em>Registration is free and takes about 15 minutes!</em></p>
-  </div>
+            <!-- Voter Registration Check -->
+            <div id="voterRegistrationScreen" class="hidden">
+                <h2>🗳️ Campaign Checkpoint</h2>
+                <p>You've completed all knowledge challenges with <span id="finalScore"></span> correct answers!</p>
+                <p>Before proceeding to elections, verify your campaign eligibility:</p>
+                
+                <div class="options">
+                    <div class="option" onclick="checkRegistration(true)">
+                        <h3>✅ My Campaign is Compliant</h3>
+                        <p>All documents meet IEBC requirements</p>
+                    </div>
+                    <div class="option" onclick="checkRegistration(false)">
+                        <h3>❌ Need Compliance Help</h3>
+                        <p>Show me election requirements</p>
+                    </div>
+                </div>
 
-  <button id="proceedToVote" class="btn btn-primary hidden" onclick="endVoterEducation()">
-    Proceed to Voting Simulation
-  </button>
-</div>
-<!-- Add to index.html -->
-<div id="constitutional-reference" class="hidden">
-  <h3>📜 Constitutional Reference</h3>
-  <div id="constitution-ref"></div>
-</div>
+                <div id="registrationInfo" class="hidden">
+                    <h3>Presidential Candidate Requirements:</h3>
+                    <ol class="requirements-list">
+                        <li>Be a Kenyan citizen by birth</li>
+                        <li>Be qualified to stand for election as MP</li>
+                        <li>Nominated by a registered party or as independent</li>
+                        <li>Submit nomination papers with 2000 supporters</li>
+                        <li>Pay KSh 200,000 nomination fee</li>
+                    </ol>
+                    <p><em>Source: IEBC Presidential Election Regulations</em></p>
+                </div>
 
-<div id="timer-display" class="hidden">
-  Time remaining: <span id="timer">30</span>s
-</div>
+                <button id="proceedToVote" class="btn btn-primary hidden" onclick="proceedToVote()">
+                    Proceed to Elections
+                </button>
+            </div>
 
-<div id="voter-registration-assistant" class="hidden">
-  <h3>🔍 Registration Assistant</h3>
-  <iframe src="https://www.iebc.or.ke/registration-centers/" 
-          style="width:100%; height:300px; border:1px solid #ccc;"></iframe>
-</div>
-            <!-- Final Voting Screen -->
+            <!-- Voting Screen -->
             <div id="votingScreen" class="hidden">
-                <h2 style="text-align: center; color: #FFD700; margin-bottom: 30px;">🏛️ You've Reached State House! 🏛️</h2>
-                <p style="text-align: center; font-size: 1.2em; margin-bottom: 30px;">Congratulations! You've proven your civic knowledge and reached the State House. Now, cast your vote for Kenya's future:</p>
+                <h2>🏛️ ELECTION DAY - 2027 🏛️</h2>
+                <p class="election-subtitle">Kenya decides its next President:</p>
                 
                 <div class="ballot-container">
                     <div class="candidate good-leader" onclick="vote('good')">
-                        <h3>👑 Dr. Amani Mwangi</h3>
-                        <p><strong>The People's Champion</strong></p>
-                        <p>✓ Transparent governance</p>
-                        <p>✓ Anti-corruption fighter</p>
-                        <p>✓ Youth employment advocate</p>
-                        <p>✓ Healthcare for all</p>
-                        <p>✓ Education reform</p>
+                        <h3>👑 YOUR CAMPAIGN</h3>
+                        <p><strong>The Reform Candidate</strong></p>
+                        <p>✓ Constitutional compliance</p>
+                        <p>✓ Anti-corruption pledge</p>
+                        <p>✓ Youth empowerment</p>
+                        <p>✓ Healthcare reforms</p>
+                        <p>✓ Education transformation</p>
                     </div>
                     
                     <div class="candidate villain" onclick="vote('villain')">
-                        <h3>👨‍💼 William Ruto</h3>
-                        <p><strong>The Current Leader</strong></p>
-                        <p>⚠️ Controversial policies</p>
-                        <p>⚠️ Economic challenges</p>
-                        <p>⚠️ Public dissatisfaction</p>
-                        <p>⚠️ Governance concerns</p>
+                        <h3>👨‍💼 STATUS QUO</h3>
+                        <p><strong>The Establishment</strong></p>
+                        <p>⚠️ Questionable integrity</p>
+                        <p>⚠️ Economic mismanagement</p>
+                        <p>⚠️ Governance failures</p>
                         <p>⚠️ Broken promises</p>
+                        <p>⚠️ Resistance to change</p>
                     </div>
                 </div>
             </div>
@@ -133,9 +127,9 @@
             <!-- Victory Screen -->
             <div id="victoryScreen" class="hidden victory-screen">
                 <div class="statehouse-icon">🏛️</div>
-                <h2>Democracy Prevails!</h2>
+                <h2 id="victoryTitle"></h2>
                 <p id="victoryMessage"></p>
-                <button class="btn btn-success" onclick="restartGame()">Play Again</button>
+                <button class="btn btn-success" onclick="restartGame()">Run Again</button>
             </div>
         </div>
     </div>
