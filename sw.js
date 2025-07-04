@@ -1,11 +1,9 @@
+// sw.js
 const CACHE_NAME = 'ikulu-run-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/styles.css',
-  '/script.js',
-  '/icon-192.png',
-  '/icon-512.png'
+  '/icon-192.png'
 ];
 
 self.addEventListener('install', event => {
